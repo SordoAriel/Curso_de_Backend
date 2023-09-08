@@ -1,3 +1,3 @@
-*.txt
+Consigna desafío entregable 2.txt
 
-DesafíoEntregableClase2.js
+DesafioEntregableClase2.js
