@@ -1,4 +1,4 @@
-const fs = require ('fs');
+import fs from 'fs'
 
 class ProductManager{
     constructor(){
@@ -8,7 +8,7 @@ class ProductManager{
     async addProduct(title, description, price, thumbnail, code, stock){
         try {
             const products = await this.getProducts()
-             if (title && description && price && thumbnail && code && stock){
+             if (title || description || price || thumbnail || code || stock){
                 if (products.some(product => product.code === code)) {
                     return ("Articulo ya existente")
                 } else {
@@ -94,6 +94,8 @@ class ProductManager{
     }
 }
 
+export const ProductsManager = new ProductManager('ProductList.json')
+
 async function test(){
     const product = new ProductManager()
     await product.addProduct("producto prueba", "Este es un producto prueba", 200, "Sin imagen", "abc123", 25);
@@ -108,4 +110,4 @@ async function test(){
     console.log(products)
     console.log(productSearched);
 }
-test()
+//test()
