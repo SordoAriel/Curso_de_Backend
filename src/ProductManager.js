@@ -5,39 +5,35 @@ class ProductManager{
         this.path = './ProductsList.json'
     }
 
-    async addProduct(title, description, price, thumbnail, code, stock){
+    async addProduct(obj) {
         try {
-            const products = await this.getProducts()
-             if (title || description || price || thumbnail || code || stock){
-                if (products.some(product => product.code === code)) {
-                    return ("Articulo ya existente")
-                } else {
-                    const product = {
-                        id: products.length > 0
-                        ? products[products.length-1].id+1
-                        : 1,
-                        title,
-                        description,
-                        price,
-                        thumbnail,
-                        code,
-                        stock,
-                    }
-                    products.push(product)
-                    await fs.promises.writeFile(this.path,JSON.stringify(products))
-                }
-            } else { 
-                return ("Ops! Parece que faltan llenar algunos campos")
-            }            
+          const products = await this.getProducts({});
+          let id;
+          if (!products.length) {
+            id = 1;
+          } else {
+            id = products[products.length - 1].id + 1;
+          }
+          if (typeof obj.status === 'boolean') {
+            const product = { id, ...obj };
+            products.push(product);
+            this.#writeFileLogic(products)
+            return product;
+          } else {
+            const product = { id, ...obj, status: true };
+            products.push(product);
+            this.#writeFileLogic(products)
+            return product;
+          }
         } catch (error) {
-            return error
+          return error;
         }
-    }
+      }
 
     async getProducts(){
         try {
             if(fs.existsSync(this.path)){
-                const productsList = await fs.promises.readFile(this.path,'utf-8')
+                const productsList = await this.#readFileLogic();
                 if(productsList === ''){
                     return []
                 } else {
@@ -53,7 +49,7 @@ class ProductManager{
 
     async getProductById(id){
         try {
-            const products = await this.getProducts()
+            const products = await this.getProducts({})
             const product = products.find( product => product.id === id)
             if(product){
                 return product
@@ -66,48 +62,48 @@ class ProductManager{
 
     }
 
-    async updateProducts(id, key, newValue){
+    async updateProduct(id, obj) {
         try {
-            const products = await this.getProducts()
-            const product = await this.getProductById(id)
-            const productToModify = {...product}
-            if(key !== 'id') {productToModify[key] = newValue};
-            const index = products.findIndex((p) => p.id === id);
-            if (index !== -1) {
-                products[index] = productToModify;
-            } 
-            await fs.promises.writeFile(this.path,JSON.stringify(products))
-            return productToModify
+          const products = await this.getProducts()
+          const productSearch = products.findIndex((p) => p.id === id)
+          if (productSearch === -1) {
+            return -1
+          }
+          if ('id' in obj) {
+            delete obj.id; 
+          }
+          const product = products[productSearch]
+          products[productSearch] = { ...product, ...obj }
+          this.#writeFileLogic(products)
+          return 1
         } catch (error) {
-            return error
-        }        
-    }
+          return error
+        }
+      }
 
     async deleteProduct(id){
         try {
             const products = await this.getProducts()
-            const newProductsList = products.filter(product => product.id !== id)
-            await fs.promises.writeFile(this.path,JSON.stringify(newProductsList))
+            const product = products.find((p) => p.id === id)
+            if (!product) {
+              return -1
+            }
+            const newProductsList = products.filter((p) => p.id !== id)
+            this.#writeFileLogic(newProductsList)
+            return 1
         } catch (error) {
             return error
         }
     }
+
+    async #writeFileLogic(param) {
+            await fs.promises.writeFile(this.path, JSON.stringify(param))
+    }
+
+    async #readFileLogic() {
+        const productsList = await fs.promises.readFile(this.path, 'utf-8');
+        return productsList
+    }
 }
 
-export const ProductsManager = new ProductManager('ProductList.json')
-
-async function test(){
-    const product = new ProductManager()
-    await product.addProduct("producto prueba", "Este es un producto prueba", 200, "Sin imagen", "abc123", 25);
-    await product.addProduct("", "Este es un producto prueba", 200, "Sin imagen", "abc124", 25)
-    await product.addProduct("producto prueba", "Este es un producto prueba", 200, "Sin imagen", "abc123", 25)
-    await product.addProduct("producto prueba2", "Este es un producto prueba2", 200, "Sin imagen", "abc124", 25)
-    await product.deleteProduct(1)
-    const productSearched = await product.getProductById(2)
-    await product.updateProducts(2, 'id', '8')
-    await product.updateProducts(2, 'description', 'cambio de prueba de descripción')
-    const products = await product.getProducts()
-    console.log(products)
-    console.log(productSearched);
-}
-//test()
+export const ProductsManager = new ProductManager('ProductsList.json')
