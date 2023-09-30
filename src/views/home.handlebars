@@ -1,0 +1,21 @@
+<h1>Catálogo de productos</h1>
+
+
+<table class="tableStyle">
+    <tr class="tableRowStyle">
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Código</th>
+        <th>Imagen</th>
+        <th>Precio</th>
+    </tr>
+        {{#each limitedProducts}}
+    <tr class="tableRowStyle">
+            <td>{{title}}</td>
+            <td>{{description}}</td>
+            <td>{{code}}</td>
+            <td>{{thumbnail}}</td>
+            <td>{{price}}</td>
+    </tr>
+        {{/each}}
+</table>

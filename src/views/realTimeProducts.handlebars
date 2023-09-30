@@ -1,0 +1,45 @@
+<h1>Catálogo de productos</h1>
+
+
+<table id="catalogueTable">
+    <tr >
+        <th>Id</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Código</th>
+        <th>Stock</th>
+        <th>Imagen</th>
+        <th>Precio</th>
+    </tr>
+        {{#each products}}
+    <tr id="productRow_{{id}}">
+        <td>{{id}}</td>
+        <td>{{title}}</td>
+        <td>{{description}}</td>
+        <td>{{code}}</td>
+        <td>{{stock}}</td>
+        <td>{{thumbnail}}</td>
+        <td>{{price}}</td>
+    </tr>
+        {{/each}}
+</table>
+<div class="actions">
+    <form class="form" id="addProductForm">
+        Nombre: <input type="text" name="nombre" id="addProductTitle">
+        Descripción <input type="text" name="descripcion" id="addProductDescription">
+        Código: <input type="text" name="codigo" id="addProductCode">
+        Precio: <input type="text" name="precio" id="addProductPrice">
+        Imagen: <input type="text" name="imagen" id="addProductThumbnail">
+        Categoría: <input type="text" name="categoria" id="addProductCategory">
+        Stock: <input type="text" name="stock" id="addProductStock">
+        <input type="submit" value="Añadir producto">
+    </form>
+    
+    <form class="form" id="deleteProductForm">
+        <input type="number" name="id" id="deleteId">
+        <input type="submit" value="Eliminar producto">
+    </form>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>

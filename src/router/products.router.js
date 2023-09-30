@@ -36,14 +36,23 @@ router.get("/:pid", async (req,res)=>{
 
 router.post("/", async (req, res)=>{
   const { title, description, price, thumbnail, code, status, stock, category } = req.body;
+  if (!thumbnail in req.body){
+    return req.body.push(thumbnail=[]) 
+  }
   if (!title || !description || !price || !code || !stock || !category) {
     return res.status(400).json({ message: "Oops! Parece que falta algún dato obligatorio" });
-  }
+  }  
   const products = await ProductsManager.getProducts()
   if (products.some(product => product.code === code)) {
     return res.status(400).json({ message: "Articulo ya existente" });
   }
+  if (!Array.isArray(thumbnail)) {
+    req.body.thumbnail = [];
+  }
   try {
+    if ('id' in req.body) {
+      delete req.body.id;
+    }
     const newProduct = await ProductsManager.addProduct(req.body);
     res.status(200).json({ message: "Producto createdo", product: newProduct });
   } catch (error) {
