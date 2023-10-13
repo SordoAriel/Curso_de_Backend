@@ -1,0 +1,15 @@
+<h1>Chat de Ferretería Ferros</h1>
+
+<h2>Bienvenidos a nuestra comunidad! Aquí pueden realizar sus consultas, los estamos leyendo</h2>
+
+<h3 id="user"></h3>
+<form action="/api/messages" method="post" id="userForm">
+    <input type="text" name="userMessage" id="userMessage">
+    <input type="submit" value="Enviar">
+</form>
+
+<div id="chat"></div>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/chat.js"></script>

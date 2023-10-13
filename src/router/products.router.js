@@ -1,12 +1,13 @@
-import { ProductsManager } from '../ProductManager.js';
+import { ProductsManager } from '../dao/ProductManagerFS.js';
 import { Router }from 'express'
+import { productsManager } from '../dao/ProductsManager.js';
 
 const router = Router()
 
 router.get("/", async (req,res)=>{
     const {limit} = req.query
     try {
-        const products = await ProductsManager.getProducts(req.query);
+        const products = await productsManager.get(req.query);
         let limitedProducts = products;
         if (limit) {
           const limitNumber = parseInt(limit); 
@@ -23,7 +24,7 @@ router.get("/", async (req,res)=>{
 router.get("/:pid", async (req,res)=>{
     const {pid} = req.params
       try {
-        const productSearch = await ProductsManager.getProductById(+pid)
+        const productSearch = await productsManager.getById(pid)
         if (!productSearch) {
           res.status(400).json({ message: 'Product not found with the id sent' })
         } else {
@@ -53,8 +54,9 @@ router.post("/", async (req, res)=>{
     if ('id' in req.body) {
       delete req.body.id;
     }
-    const newProduct = await ProductsManager.addProduct(req.body);
-    res.status(200).json({ message: "Producto createdo", product: newProduct });
+    const newProduct = await productsManager.add(req.body)
+  res.status(200).json({ message: "Producto createdo", product: newProduct })
+    const newProductFS = await ProductsManager.addProduct(req.body);
   } catch (error) {
     res.status(500).json({ message: error });
   }
@@ -63,11 +65,11 @@ router.post("/", async (req, res)=>{
 router.put("/:pid", async (req, res) => {
   const { pid } = req.params;
   try {
-    const productSearch = await ProductsManager.updateProduct(+pid, req.body);
+    const productSearch = await productsManager.update(pid, req.body);
     if (productSearch === -1) {
       res.status(400).json({ message: "Lo sentimos! No fue posible encontrar el producto indicado" });
     } else {
-      res.status(200).json({ message: "Producto actualizado correctamente" });
+      res.status(200).json({ message: "Producto actualizado correctamente"});
     }
   } catch (error) {
     res.status(500).json({ message: error });
@@ -77,7 +79,7 @@ router.put("/:pid", async (req, res) => {
 router.delete("/:pid", async (req, res) => {
   const { pid } = req.params;
   try {
-      const productDelete = await ProductsManager.deleteProduct(+pid);
+      const productDelete = await productsManager.delete(pid);
       if (productDelete === -1) {
           res.status(400).json({ message: "Lo sentimos! No fue posible encontrar ese producto" });
       } else {

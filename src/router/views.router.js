@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { ProductsManager } from '../ProductManager.js';
+import { ProductsManager } from '../dao/ProductManagerFS.js';
+import { messagesManager } from '../dao/MessagesManager.js'
 
 const router = Router()
 
@@ -23,6 +24,11 @@ router.get('/home', async (req,res)=>{
 router.get('/realtimeproducts', async (req,res)=>{
   const products = await ProductsManager.getProducts();
   res.render("realTimeProducts", { products });
+})
+
+router.get('/chat', async (req,res) =>{
+  console.log(req.body)
+  res.render("chat");
 })
 
 export default router

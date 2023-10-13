@@ -1,11 +1,14 @@
 import express from 'express';
 import productsRouter from './router/products.router.js'
 import cartRouter from './router/cart.router.js'
+import viewRouter from './router/views.router.js'
+import messagesRouter from './router/messages.router.js'
 import { __dirname } from "./utils.js";
 import { engine } from 'express-handlebars'
-import viewRouter from './router/views.router.js'
 import { Server } from 'socket.io'
-import { ProductsManager } from './ProductManager.js';
+import { ProductsManager } from './dao/ProductManagerFS.js';
+import './db/configDB.js'
+import { messagesManager } from './dao/MessagesManager.js';
 
 const app = express()
 
@@ -20,7 +23,7 @@ app.use(express.static(__dirname + '/public'))
 app.use('/api/products', productsRouter)
 app.use('/api/carts', cartRouter)
 app.use('/api', viewRouter)
-
+app.use('/api/messages', messagesRouter)
 
 const httpServer = app.listen(8080, () => {
     console.log('Escuchando al puerto 8080')
@@ -41,4 +44,14 @@ socketServer.on('connection', (socket) => {
     const deletedProduct = await ProductsManager.deleteProduct(+id)
     socket.emit("deletedProduct", id)
   })
+  socket.on("newUser", (user) => {
+    socket.broadcast.emit("newUserBroadcast", user);
+  });
+
+ 
+  socket.on("message", async (info) => {
+    //await messagesManager.add(info); 
+    const messages = await messagesManager.get()
+    socketServer.emit("chat", messages);
+  });
 })
