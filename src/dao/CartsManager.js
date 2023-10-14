@@ -9,49 +9,30 @@ class CartsManager extends BasicManager {
 
   async addProductToCart(cid, pid, quantity) {
     try {
-      const cartId = mongoose.Types.ObjectId(cid); 
-      const cart = await this.model.findOne({ _id: cartId });
+      if(cid !== mongoose.Types.ObjectId){
+        return -1
+      }
+      const cart = await this.model.findOne({ _id: cid });
       if (!cart) {
-        console.log('no cart')
-        return -1;
+        return -1; 
       } else {
-        const product = {
-          _id: pid,
-          quantity: quantity
-        };
-  
-        cart.products.push(product);
-  
-        try {
-          console.log('Antes de guardar el carrito');
-          const savedCart = await cart.save();
-          console.log('Después de guardar el carrito');
-          console.log('savedCart:', savedCart);
-          return product;
-        } catch (error) {
-          console.error('Error al guardar el carrito:', error);
-          return error;
+        const existingProduct = cart.products.find(product => product._id === pid);
+        if (existingProduct) {
+          existingProduct.quantity += quantity;
+        } else {
+          const product = {
+            _id: pid,
+            quantity: quantity
+          };
+          cart.products.push(product);
         }
+        await cart.save();
+        return cart;
       }
     } catch (error) {
       return error;
     }
   }
 }
-            //return product
-      /*
-      const carts = await this.getCarts();
-      const cartIndex = carts.findIndex((c) => c.id === +id);
-      if (cartIndex === -1) {
-        return -1; 
-      }
-      const cart = carts[cartIndex];
-      const existingProductIndex = cart.products.findIndex((p) => p.pid === obj.pid);
-      if (existingProductIndex !== -1) {
-        cart.products[existingProductIndex].quantity += obj.quantity;
-      } else {
-        cart.products.push(obj);
-      }
-      return cart;*/
 
 export const cartsManager = new CartsManager();

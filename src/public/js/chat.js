@@ -36,17 +36,15 @@ socketClient.on("newUserBroadcast", (user) => {
 form.onsubmit = (e) => {
   e.preventDefault();
   const infoMessage = {
-    name: user,
+    user: user,
     message: inputMessage.value,
   };
   socketClient.emit("message", infoMessage);
 };
 
 socketClient.on("chat", (messages) => {
-  console.log("mensajesssss", messages)
   const chat = messages
-    .map((objMessage) => `<p>${objMessage.name}: ${objMessage.message}</p>`)
+    .map((objMessage) => `<p>${objMessage.user}: ${objMessage.message}</p>`)
     .join(" ");
   divChat.innerHTML = chat;
 });
-

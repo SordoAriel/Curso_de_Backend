@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { ProductsManager } from '../dao/ProductManagerFS.js';
-import { messagesManager } from '../dao/MessagesManager.js'
 
 const router = Router()
 
@@ -27,7 +26,6 @@ router.get('/realtimeproducts', async (req,res)=>{
 })
 
 router.get('/chat', async (req,res) =>{
-  console.log(req.body)
   res.render("chat");
 })
 

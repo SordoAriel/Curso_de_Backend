@@ -31,20 +31,19 @@ router.post("/:cid/product/:pid", async (req, res) => {
     const { quantity } = req.body;
     if (!quantity || quantity <= 0) {
         res.status(400).json({ message: "Es necesario ingresar una cantidad válida mayor a 0" });
-    } else {
-        try {
-            const product = await cartsManager.addProductToCart(cid, pid, quantity);
-            if (product === -1) {
-                res.status(400).json({ message: 'Lo sentimos! No fue posible encontrar el carrito indicado' });
-            } else {
-                res.status(200).json({
-                    message: 'Se añadió el producto al carrito correctamente',
-                    product: product,
-                });
-            }
-        } catch (error) {
-            res.status(500).json({ message: error });
+    } 
+    try {
+        const cart = await cartsManager.addProductToCart(cid, pid, quantity);
+        if (cart === -1) {
+            res.status(400).json({ message: 'Lo sentimos! No fue posible encontrar el carrito indicado' });
+        } else {
+            res.status(200).json({
+                message: 'Se añadió el producto al carrito correctamente',
+                product: cart,
+            });
         }
+    } catch (error) {
+        res.status(500).json({ message: error });
     }
 });
 
