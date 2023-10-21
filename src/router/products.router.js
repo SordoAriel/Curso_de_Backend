@@ -1,21 +1,17 @@
-import { ProductsManager } from '../dao/ProductManagerFS.js';
+import { ProductsManager } from '../dao/FS/ProductManagerFS.js';
 import { Router }from 'express'
-import { productsManager } from '../dao/ProductsManager.js';
+import { productsManager } from '../dao/DB/Managers/ProductsManager.js';
 
 const router = Router()
 
 router.get("/", async (req,res)=>{
-    const {limit} = req.query
     try {
-        const products = await productsManager.get(req.query);
-        let limitedProducts = products;
-        if (limit) {
-          const limitNumber = parseInt(limit); 
-          if (!isNaN(limitNumber)) {
-            limitedProducts = products.slice(0, limitNumber);
-          }
+        const products = await productsManager.getWithAdvancedSearch(req.query);
+        console.log('products', products)
+        if (!products) {
+          res.status(400).json({ message: 'Oops! Parece que hubo un error en tu búsqeuda'})
         }
-        res.status(200).json({ message: 'Products found:', products: limitedProducts });
+        res.status(200).json({ message: 'Products found:', products: products });
       } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
       }

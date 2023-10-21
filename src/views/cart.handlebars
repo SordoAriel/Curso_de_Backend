@@ -1,0 +1,25 @@
+<h1>Su carrito:</h1>
+<p hidden id="cid">{{cid}}</p>
+
+<table class="tableStyle">
+    <tr class="tableRowStyle">
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Código</th>
+        <th>Imagen</th>
+        <th>Precio</th>
+        <th>Cantidad</th>
+    </tr>
+        {{#each cart.products}}
+    <tr class="tableRowStyle" id="productRow{{_id}}">
+            <td>{{product.title}}</td>
+            <td>{{product.description}}</td>
+            <td>{{product.code}}</td>
+            <td>{{product.thumbnail}}</td>
+            <td>{{product.price}}</td>
+            <td>{{quantity}}</td>
+    </tr>
+        {{/each}}
+</table>
+
+<script src="/js/cart.js"></script>

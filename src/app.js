@@ -5,9 +5,9 @@ import viewRouter from './router/views.router.js'
 import { __dirname } from "./utils.js";
 import { engine } from 'express-handlebars'
 import { Server } from 'socket.io'
-import { ProductsManager } from './dao/ProductManagerFS.js';
-import './db/configDB.js'
-import { messagesManager } from './dao/MessagesManager.js';
+import { ProductsManager } from './dao/FS/ProductManagerFS.js';
+import './dao/DB/db/configDB.js'
+import { messagesManager } from './dao//DB/Managers/MessagesManager.js';
 
 const app = express()
 
@@ -21,7 +21,7 @@ app.use(express.static(__dirname + '/public'))
 
 app.use('/api/products', productsRouter)
 app.use('/api/carts', cartRouter)
-app.use('/api', viewRouter)
+app.use('/', viewRouter)
 
 const httpServer = app.listen(8080, () => {
     console.log('Escuchando al puerto 8080')

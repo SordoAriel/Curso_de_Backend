@@ -1,0 +1,32 @@
+<h1>Productos:</h1>
+
+<table class="tableStyle">
+    <tr class="tableRowStyle">
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Código</th>
+        <th>Imagen</th>
+        <th>Precio</th>
+    </tr>
+        {{#each products.payload}}
+    <tr class="tableRowStyle" id="productRow{{_id}}">
+            <td>{{title}}</td>
+            <td>{{description}}</td>
+            <td>{{code}}</td>
+            <td>{{thumbnail}}</td>
+            <td>{{price}}</td>
+            <td><form method="POST" action="http://localhost:8080/api/carts/65298a9e029ea332d3080333/product/{{_id}}">
+                    <button type="submit">Enviar</button>
+                </form>
+            </td>
+    </tr>
+        {{/each}}
+</table>
+
+<p>Resultados: {{products.payload.length}}</p>
+<a href="{{products.prevLink}}">Página {{products.prevPage}}  </a>
+<p>Página {{products.page}}</p>
+<br>
+<a href="{{products.nextLink}}">Página {{products.nextPage}}  </a>
+
+<script src="/js/products.js"></script>
