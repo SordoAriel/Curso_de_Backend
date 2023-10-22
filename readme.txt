@@ -12,7 +12,7 @@ No sé si era necesario, la consigna no es 100% clara al respecto, porque no sé
 Aún así, intenté pasándole de manera fija el _id de un carrito, pero tampoco de esa manera lo pude hacer andar. En mi public>products.js hay dos intentos, uno comentado y el otro no.
 Tarde me dí cuenta que de esa manera estoy mezclando funciones del back en el front, y eso no debe estar bien. 
 Lo siguiente que intenté es haciendo que el button sea un formulario con un method POST que ejecute el link de agregar al carrito. Tampoco lo pude hacer andar.
-Finalmente me doy cuenta que hay que darle mucho uso al public>products.js , no? O con algo de lo que intenté antes estuve a un pasito y no me dí cuenta?
+Finalmente me doy cuenta que hay que darle mucho uso al public>products.js , no? O con algo de lo que intenté antes estuve a un pasito y no me dí cuenta? Por esa duda es que no los he borrado (perdón la desprolijidad)
 Independientemente de eso, y además del tema de de dónde tomar el carrito, cómo pasar los _ids de los productos se me hizo difícil de pensar. 
 
 *Otra cosa, un poco menor pero que igual me hubiese gustado dejarlo tal cual como pide la consigna, es que no pude, en el products.router, 
