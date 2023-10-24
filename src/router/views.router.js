@@ -42,6 +42,7 @@ router.get('/chat', async (req,res) =>{
 
 router.get('/products', async (req, res) =>{
   const products = await productsManager.getWithAdvancedSearch(req.query);
+  console.log(products)
   res.render("products", {products})
 })
 

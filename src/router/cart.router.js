@@ -28,10 +28,7 @@ router.post("/", async (req, res)=>{
 
 router.post("/:cid/product/:pid", async (req, res) => {
     const { cid, pid } = req.params;
-    const { quantity=1 } = req.body;
-    if (!quantity || quantity <= 0) {
-        res.status(400).json({ message: "Es necesario ingresar una cantidad válida mayor a 0" });
-    } 
+    const { quantity } = req.body;
     try {
         const cart = await cartsManager.addProductToCart(cid, pid, quantity);
         if (cart === -1) {

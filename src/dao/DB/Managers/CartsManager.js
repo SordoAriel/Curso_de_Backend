@@ -17,21 +17,21 @@ class CartsManager extends BasicManager {
     
   }
 
-  async addProductToCart(cid, pid, quantity) {
+  async addProductToCart(cid, pid, quantity=1) {
     try {
-      if(cid !== mongoose.Types.ObjectId){
-        return -1
+      if (!mongoose.Types.ObjectId.isValid(cid)) {
+        return -1;
       }
       const cart = await this.model.findOne({ _id: cid });
       if (!cart) {
         return -1; 
       } else {
-        const existingProduct = cart.products.find(product => product._id === pid);
+        const existingProduct = cart.products.find(p => p.product.toString() === pid);
         if (existingProduct) {
           existingProduct.quantity += quantity;
         } else {
           const product = {
-            _id: pid,
+            product: pid,
             quantity: quantity
           };
           cart.products.push(product);

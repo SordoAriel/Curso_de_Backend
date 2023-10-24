@@ -9,14 +9,14 @@
         <th>Precio</th>
     </tr>
         {{#each products.payload}}
-    <tr class="tableRowStyle" id="productRow{{_id}}">
+    <tr>
             <td>{{title}}</td>
             <td>{{description}}</td>
             <td>{{code}}</td>
             <td>{{thumbnail}}</td>
             <td>{{price}}</td>
-            <td><form method="POST" action="http://localhost:8080/api/carts/65298a9e029ea332d3080333/product/{{_id}}">
-                    <button type="submit">Enviar</button>
+            <td><form method="POST" action="/api/carts/6537ba2f730bccd42fb97fd9/product/{{id}}">
+                    <button type="submit">Añadir al carrito</button>
                 </form>
             </td>
     </tr>
