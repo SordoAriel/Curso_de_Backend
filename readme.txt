@@ -14,6 +14,9 @@ Tarde me dí cuenta que de esa manera estoy mezclando funciones del back en el f
 Lo siguiente que intenté es haciendo que el button sea un formulario con un method POST que ejecute el link de agregar al carrito. Tampoco lo pude hacer andar.
 Finalmente me doy cuenta que hay que darle mucho uso al public>products.js , no? O con algo de lo que intenté antes estuve a un pasito y no me dí cuenta? Por esa duda es que no los he borrado (perdón la desprolijidad)
 Independientemente de eso, y además del tema de de dónde tomar el carrito, cómo pasar los _ids de los productos se me hizo difícil de pensar. 
+ACTUALIZACIÓN 24/10: Pude hacer andar al botón!! Inspirado en el formulario que hizo la clase pasada, pude hacerlo andar, prescindiendo del products.js (no sé si mi solución es muy ortodoxa, pero funciona). 
+Sigue siendo con un carrito fijo, pero creo que fácilmente, después de armar el login, podría pasarle el cartid por params y reemplazarlo en el enlace de action.
+Lo que intenté hacer y no puedo, es que luego de ir al enlace de action y agregar el producto al carrito, me redireccione nuevamente a la vista de localhost:8080/products, pero bueno, ya lo veremos más adelante eso calculo
 
 *Otra cosa, un poco menor pero que igual me hubiese gustado dejarlo tal cual como pide la consigna, es que no pude, en el products.router, 
 en el método router.get("/"), 
