@@ -6,6 +6,7 @@ Se me ocurrió que para hacerlo podía ejecutar la función que tengo en cartsMa
 En el products router.get("/") la misma función sí anda correctamente; sin embargo, en este lugar no, y no puedo entender por qué. 
 Ya en mi view.router, solo me devuelve [Object], no el contenido del array donde deberían aparecer los objetos con {product y quantity}.
 En public>cart.js hay un esbozo de intento de hacerlo de otra manera, por sí tengo que buscar un plan b, pero bueno, sigue a desarrollar también.
+ACTUALIZACIÓN 24/10: Ya lo pude solucionar :D
 
 *Después, tampoco pude darle funcionalidad al botón de la vista de /products. 
 No sé si era necesario, la consigna no es 100% clara al respecto, porque no sé bien de dónde se puede tomar a qué carrito debería agregar. 

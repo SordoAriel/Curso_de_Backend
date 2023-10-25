@@ -7,7 +7,6 @@ const router = Router()
 router.get("/", async (req,res)=>{
     try {
         const products = await productsManager.getWithAdvancedSearch(req.query);
-        console.log('products', products)
         if (!products) {
           res.status(400).json({ message: 'Oops! Parece que hubo un error en tu búsqeuda'})
         }

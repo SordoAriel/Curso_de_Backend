@@ -9,7 +9,7 @@ class CartsManager extends BasicManager {
 
   async getByIdAndPopulate(cid){
     try {
-      const products = await this.model.find({ _id: cid }).populate("products.product", ["title", "description", "price", "stock", "category"]);
+      const products = await this.model.find({ _id: cid }).populate("products.product");
       return products
     } catch (error) {
       return error

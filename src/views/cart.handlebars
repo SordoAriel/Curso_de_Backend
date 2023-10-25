@@ -10,13 +10,13 @@
         <th>Precio</th>
         <th>Cantidad</th>
     </tr>
-        {{#each cart.products}}
+        {{#each populatedProducts}}
     <tr class="tableRowStyle" id="productRow{{_id}}">
-            <td>{{product.title}}</td>
-            <td>{{product.description}}</td>
-            <td>{{product.code}}</td>
-            <td>{{product.thumbnail}}</td>
-            <td>{{product.price}}</td>
+            <td>{{title}}</td>
+            <td>{{description}}</td>
+            <td>{{code}}</td>
+            <td>{{thumbnail}}</td>
+            <td>{{price}}</td>
             <td>{{quantity}}</td>
     </tr>
         {{/each}}

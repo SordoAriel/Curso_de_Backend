@@ -41,20 +41,44 @@ router.get('/chat', async (req,res) =>{
 })
 
 router.get('/products', async (req, res) =>{
-  const products = await productsManager.getWithAdvancedSearch(req.query);
-  console.log(products)
-  res.render("products", {products})
+  try {
+    const {firstName} = req.session
+    const products = await productsManager.getWithAdvancedSearch(req.query);
+  res.status(200).render("products", {products, firstName})
+  } catch (error) {
+    return error
+  }
+  
 })
 
 router.get('/carts/:cid', async (req, res) =>{
   const {cid} = req.params
   try {
     const displayCart = await cartsManager.getByIdAndPopulate(cid)
-  res.render("cart", {displayCart, cid})
-  console.log(cid)
+    console.log('dc', displayCart)
+    console.log('dc0', displayCart[0])
+    const populatedProducts = displayCart[0].products.map(product => {
+      return {
+        title: product.product.title,
+        description: product.product.description,
+        code: product.product.code,
+        thumbnails: product.product.thumbnails,
+        price: product.product.price,
+        quantity: product.quantity
+      };
+    })
+  res.render("cart", {populatedProducts, cid})
   } catch (error) {
     console.log(error)
   }
+})
+
+router.get('/signup', async (req, res) => {
+  res.render('signup')
+})
+
+router.get('/login', async (req, res) => {
+  res.render('login')
 })
 
 export default router
