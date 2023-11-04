@@ -12,6 +12,8 @@ import { messagesManager } from './dao//DB/Managers/MessagesManager.js';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
+import passport from 'passport';
+import './passport.js'
 
 const app = express()
 
@@ -35,6 +37,9 @@ app.use(session({
     mongoUrl: URI
   })
 }))
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/api/products', productsRouter)
 app.use('/api/carts', cartRouter)

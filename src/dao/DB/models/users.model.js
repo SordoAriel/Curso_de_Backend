@@ -17,6 +17,10 @@ const usersSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    githubRegister: {
+        type: Boolean,
+        default: false
     }
 })
 

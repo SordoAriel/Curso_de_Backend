@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { usersManager } from "../dao/DB/Managers/usersManager.js";
+import passport from "passport";
 
 const router = Router()
 
@@ -9,28 +10,20 @@ router.get("/logout", async (req, res) =>{
     })
 })
 
-router.post("/signup", async (req, res)=>{
-    const newUser = await usersManager.add(req.body)
-    res.status(200).json({message: 'Usuario creado', newUser})
+router.post('/signup', passport.authenticate('signup'), (req, res) =>{
+    res.status(200).redirect('http://localhost:8080/products')
 })
 
-router.post('/login', async (req, res)=>{
-    const { email, password } = req.body
-    try {
-        const existingUser = await usersManager.findByEmail(email)
-    if(!existingUser){
-        res.status(400).json({message: 'Usuario no encontrado'})
-    }
-    req.session["email"] = email;
-    req.session["firstName"] = existingUser.firstName;
-    if(email === "adminCoder@coder.com" && password === "adminCod3r123"){
-        req.session["isAdmin"] = true;
-    }
+router.post('/login', passport.authenticate('login'), (req, res) =>{
     res.status(200).redirect('http://localhost:8080/products')
-    } catch (error) {
-        return error
-    }
-    
-}) 
+})
+
+router.get('/auth/github',
+  passport.authenticate('github', { scope: [ 'user:email' ] }), 
+);
+
+router.get('/github', 
+passport.authenticate('github', { successRedirect: '/products', failureRedirect: '/login' }),
+);
 
 export default router;

@@ -42,9 +42,8 @@ router.get('/chat', async (req,res) =>{
 
 router.get('/products', async (req, res) =>{
   try {
-    const {firstName} = req.session
     const products = await productsManager.getWithAdvancedSearch(req.query);
-  res.status(200).render("products", {products, firstName})
+  res.status(200).render("products", {products, firstName: req.user.firstName})
   } catch (error) {
     return error
   }

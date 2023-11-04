@@ -12,7 +12,6 @@ export default class BasicManager {
     }
   
     async add(obj) {
-      console.log("obj", obj);
       return this.model.create(obj);
     }
   
