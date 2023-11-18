@@ -13,6 +13,7 @@ const cartsSchema = new Schema({
                 required: true,
                 default: 1
             },
+            _id: false,
         }]
 })
 

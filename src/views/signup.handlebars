@@ -1,10 +1,11 @@
 <h1>Sign Up:</h1>
 
-<form action="/api/users/signup" method="POST">
+<form action="/api/sessions/signup" method="POST">
     Nombre/s: <input type="text" name="firstName">
     Apellido/s: <input type="text" name="lastName">
+    Edad: <input type="number" name="age">
     Email: <input type="email" name="email">
     Contraseña: <input type="password" name="password">
     <input type="submit" value="Registrarse"> 
 </form>
-<button onclick="location.href='http://localhost:8080/api/users/auth/github'">Github</button>
+<button onclick="location.href='http://localhost:8080/api/sessions/auth/github'">Github</button>

@@ -7,7 +7,7 @@ const router = Router()
 router.get("/:cid", async (req, res)=>{
     const { cid } = req.params
     try {
-        const displayCart = await cartsManager.getByIdAndPopulate(cid)
+        const displayCart = await cartsManager.get(cid)
         if(!displayCart){
             res.status(400).json({ message: "Lo sentimos, no pudimos encontrar tu compra" });
         }

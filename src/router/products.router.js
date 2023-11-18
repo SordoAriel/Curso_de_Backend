@@ -8,9 +8,9 @@ router.get("/", async (req,res)=>{
     try {
         const products = await productsManager.getWithAdvancedSearch(req.query);
         if (!products) {
-          res.status(400).json({ message: 'Oops! Parece que hubo un error en tu búsqeuda'})
+          res.status(400).json({ message: 'Oops! Parece que hubo un error en tu búsqueda'})
         }
-        res.status(200).json({ message: 'Products found:', products: products });
+        res.status(200).json({ message: 'Productos encontrados:', products: products });
       } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
       }

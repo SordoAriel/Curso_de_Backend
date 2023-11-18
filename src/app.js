@@ -2,6 +2,7 @@ import express from 'express';
 import productsRouter from './router/products.router.js'
 import cartRouter from './router/cart.router.js'
 import viewRouter from './router/views.router.js'
+import sessionRouter from './router/session.router.js'
 import usersRouter from './router/users.router.js' 
 import { __dirname } from "./utils.js";
 import { engine } from 'express-handlebars'
@@ -13,7 +14,7 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
-import './passport.js'
+import './passport.js';
 
 const app = express()
 
@@ -44,6 +45,7 @@ app.use(passport.session());
 app.use('/api/products', productsRouter)
 app.use('/api/carts', cartRouter)
 app.use('/api/users', usersRouter)
+app.use('/api/sessions', sessionRouter)
 app.use('/', viewRouter)
 
 const httpServer = app.listen(8080, () => {

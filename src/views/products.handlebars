@@ -1,6 +1,6 @@
 <h1>Productos:</h1>
 <h2 id="firstName">Cliente: {{firstName}}!</h2>
-<button onclick="location.href='/api/users/logout'">Cerrar sesión</button>
+<button onclick="location.href='/api/sessions/logout'">Cerrar sesión</button>
 
 <table class="tableStyle">
     <tr class="tableRowStyle">
@@ -9,6 +9,7 @@
         <th>Código</th>
         <th>Imagen</th>
         <th>Precio</th>
+        <th>Cantidad</th>
     </tr>
         {{#each products.payload}}
     <tr>
@@ -17,10 +18,10 @@
             <td>{{code}}</td>
             <td>{{thumbnail}}</td>
             <td>{{price}}</td>
-            <td><form method="POST" action="/api/carts/6537ba2f730bccd42fb97fd9/product/{{id}}">
-                    <button type="submit">Añadir al carrito</button>
-                </form>
-            </td>
+            <form id="formHeader" method="POST" action="/api/carts/655520e9602ccc046a7ad21b/product/{{id}}">
+                <td><input type="number" name="quantity" min="1" max="{{stock}}"></td>
+                <td><button type="submit">Añadir al carrito</button></td>
+            </form>
     </tr>
         {{/each}}
 </table>

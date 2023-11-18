@@ -2,6 +2,7 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GithubStrategy } from "passport-github2";
 import { usersManager } from "./dao/DB/Managers/usersManager.js";
+import { cartsManager} from "./dao/DB/Managers/CartsManager.js"
 import { hashData, compareData } from "./utils.js";
 
 passport.use('signup', new LocalStrategy(
@@ -14,7 +15,11 @@ passport.use('signup', new LocalStrategy(
                 return done(null, false)
             }
             const hashedPassword = await hashData(password)
-            const newUser = await usersManager.add({...req.body, password:hashedPassword})
+            const newUser = await usersManager.add({
+                ...req.body, 
+                password:hashedPassword,
+                cartId: await cartsManager.add()
+            })
             done(null, newUser)
         } catch (error) {
             done(error)
@@ -44,7 +49,7 @@ passport.use('login', new LocalStrategy(
 passport.use('github', new GithubStrategy({
     clientID: "Iv1.aa46ac57234901ee",
     clientSecret: "cd7c4281756cab369f0f534c6e771d12bf9b4b9d",
-    callbackURL: "http://localhost:8080/api/users/github"
+    callbackURL: "http://localhost:8080/api/sessions/github"
 }, async (accessToken, refreshToken, profile, done) =>{
     try {
         const existingUser = await usersManager.findByEmail(profile._json.email)
@@ -55,15 +60,18 @@ passport.use('github', new GithubStrategy({
                 done(null, false)
             }
         } else {
-        const newUser = {
-            firstName: profile.username,
-            lastName: profile.username,
-            email: profile._json.email,
-            password: profile._json.id,
-            githubRegister: true
-        } 
-        const createdUser = await usersManager.add(newUser)
-        done(null, createdUser)
+            const newCart = await cartsManager.add()
+            const newUser = {
+                firstName: profile._json.name.split(' ')[0] || profile.username,
+                lastName: profile._json.name.split(' ')[1] || profile.username,
+                email: profile._json.email,
+                password: " ",
+                cartId: newCart,
+                role: "user",
+                githubRegister: true
+            } 
+            const createdUser = await usersManager.add(newUser)
+            done(null, createdUser)
         }
     } catch (error) {
         done(error)

@@ -4,19 +4,9 @@ import mongoose from 'mongoose'
 
 class CartsManager extends BasicManager {
   constructor() {
-    super(cartsModel);
+    super(cartsModel, "products.product");
   }
-
-  async getByIdAndPopulate(cid){
-    try {
-      const products = await this.model.find({ _id: cid }).populate("products.product");
-      return products
-    } catch (error) {
-      return error
-    }
-    
-  }
-
+  
   async addProductToCart(cid, pid, quantity=1) {
     try {
       if (!mongoose.Types.ObjectId.isValid(cid)) {

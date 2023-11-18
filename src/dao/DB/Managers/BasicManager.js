@@ -1,14 +1,15 @@
 export default class BasicManager {
-    constructor(model) {
+    constructor(model, categoryToPopulate) {
       this.model = model;
+      this.categoryToPopulate = categoryToPopulate;
     }
   
     async get() {
-      return this.model.find().lean();
+      return this.model.find().populate(this.categoryToPopulate);
     }
   
     async getById(id) {
-      return this.model.findById(id);
+      return this.model.findById(id).populate(this.categoryToPopulate);
     }
   
     async add(obj) {

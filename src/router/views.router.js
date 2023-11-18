@@ -2,6 +2,7 @@ import { Router } from "express";
 import { ProductsManager } from '../dao/FS/ProductManagerFS.js';
 import { productsManager } from '../dao/DB/Managers/ProductsManager.js'
 import { cartsManager } from '../dao/DB/Managers/CartsManager.js'
+import { mongoose } from 'mongoose'
 
 const router = Router()
 
@@ -43,7 +44,8 @@ router.get('/chat', async (req,res) =>{
 router.get('/products', async (req, res) =>{
   try {
     const products = await productsManager.getWithAdvancedSearch(req.query);
-  res.status(200).render("products", {products, firstName: req.user.firstName})
+    const cartId = await req.user.cartId.toString()
+    res.status(200).render("products", {products, firstName: req.user.firstName, cid: cartId})
   } catch (error) {
     return error
   }
@@ -54,8 +56,6 @@ router.get('/carts/:cid', async (req, res) =>{
   const {cid} = req.params
   try {
     const displayCart = await cartsManager.getByIdAndPopulate(cid)
-    console.log('dc', displayCart)
-    console.log('dc0', displayCart[0])
     const populatedProducts = displayCart[0].products.map(product => {
       return {
         title: product.product.title,
@@ -68,7 +68,6 @@ router.get('/carts/:cid', async (req, res) =>{
     })
   res.render("cart", {populatedProducts, cid})
   } catch (error) {
-    console.log(error)
   }
 })
 

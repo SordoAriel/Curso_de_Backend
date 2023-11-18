@@ -1,4 +1,4 @@
-import { Schema, model} from "mongoose";
+import { Schema, SchemaTypes, model} from "mongoose";
 
 const usersSchema = new Schema({
     firstName: {
@@ -14,8 +14,22 @@ const usersSchema = new Schema({
         required: true,
         unique: true
     },
+    age: {
+        type: Number,
+    },
     password: {
         type: String,
+        required: true
+    },
+    cartId: {
+        type: SchemaTypes.ObjectId, 
+        ref: "carts",
+        required: true,
+    },
+    role: {
+        type: String,
+        enum: ["user", "admin"],
+        default: "user",
         required: true
     },
     githubRegister: {
