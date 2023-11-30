@@ -32,7 +32,7 @@ const usersSchema = new Schema({
         default: "user",
         required: true
     },
-    githubRegister: {
+    googleRegister: {
         type: Boolean,
         default: false
     }

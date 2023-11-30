@@ -1,6 +1,7 @@
 import passport from "passport";
+import config from "./config.js";
 import { Strategy as LocalStrategy } from "passport-local";
-import { Strategy as GithubStrategy } from "passport-github2";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { usersManager } from "./dao/DB/Managers/usersManager.js";
 import { cartsManager} from "./dao/DB/Managers/CartsManager.js"
 import { hashData, compareData } from "./utils.js";
@@ -46,37 +47,40 @@ passport.use('login', new LocalStrategy(
     }
 ));
 
-passport.use('github', new GithubStrategy({
-    clientID: "Iv1.aa46ac57234901ee",
-    clientSecret: "cd7c4281756cab369f0f534c6e771d12bf9b4b9d",
-    callbackURL: "http://localhost:8080/api/sessions/github"
-}, async (accessToken, refreshToken, profile, done) =>{
-    try {
-        const existingUser = await usersManager.findByEmail(profile._json.email)
-        if(existingUser){
-            if(existingUser.githubRegister){
-                done(null, existingUser)
+passport.use('google', new GoogleStrategy(
+    {
+    clientID: config.google_client_id,
+    clientSecret: config.google_client_secret,
+    callbackURL: config.google_callback_url
+    }, 
+    async (accessToken, refreshToken, profile, done) => {
+        try {
+            const existingUser = await usersManager.findByEmail(profile._json.email)
+            if(existingUser){
+                if(existingUser.googleRegister){
+                    done(null, existingUser)
+                } else {
+                    done(null, false)
+                }
             } else {
-                done(null, false)
+                const newCart = await cartsManager.add()
+                const newUser = {
+                    firstName: profile._json.name.split(' ')[0] || profile.username,
+                    lastName: profile._json.name.split(' ')[1] || profile.username,
+                    email: profile._json.email,
+                    password: " ",
+                    cartId: newCart,
+                    role: "user",
+                    googleRegister: true
+                } 
+                const createdUser = await usersManager.add(newUser)
+                done(null, createdUser)
             }
-        } else {
-            const newCart = await cartsManager.add()
-            const newUser = {
-                firstName: profile._json.name.split(' ')[0] || profile.username,
-                lastName: profile._json.name.split(' ')[1] || profile.username,
-                email: profile._json.email,
-                password: " ",
-                cartId: newCart,
-                role: "user",
-                githubRegister: true
-            } 
-            const createdUser = await usersManager.add(newUser)
-            done(null, createdUser)
+        } catch (error) {
+            done(error)
         }
-    } catch (error) {
-        done(error)
     }
-}))
+));
 
 passport.serializeUser(function(user, done) {
     done(null, user._id);

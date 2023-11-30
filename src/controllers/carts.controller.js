@@ -1,13 +1,17 @@
-import { Router }from 'express'
-import { CartsManager } from '../dao/FS/CartsManagerFS.js'
-import { cartsManager } from '../dao/DB/Managers/CartsManager.js'
+import { 
+    getById, 
+    newCart, 
+    addProductToCart, 
+    updateProductFromCart, 
+    updateQuantity, 
+    deleteOneProductFromCart, 
+    cleanCart 
+} from "../services/carts.services.js";
 
-const router = Router()
-
-router.get("/:cid", async (req, res)=>{
+export const findCart = async (req,res) => {
     const { cid } = req.params
     try {
-        const displayCart = await cartsManager.get(cid)
+        const displayCart = await getById(cid)
         if(!displayCart){
             res.status(400).json({ message: "Lo sentimos, no pudimos encontrar tu compra" });
         }
@@ -15,22 +19,27 @@ router.get("/:cid", async (req, res)=>{
     } catch (error) {
         res.status(500).json({ message: error });
     }
-})
+}
 
-router.post("/", async (req, res)=>{
+export const createCart = async (req, res)=>{
+    const cart = req.body 
+    if(!cart){
+        cart.products[0].product = mongoose.Types.ObjectId(cartData.products[0].product);
+        cart.products[0].quantity = parseInt(cartData.products[0].quantity, 10);
+    }
     try {
-        const newCart = await cartsManager.add(req.body);
-        res.status(201).json({ message: "Nuevo carrito creado", cart: newCart });
+        const createNewCart = await newCart(cart);
+        res.status(201).json({ message: "Nuevo carrito creado", cart: createNewCart });
       } catch (error) {
-        res.status(500).json({ message: error });
+        res.status(500).json({ message: error.message });
       }
-})
+}
 
-router.post("/:cid/product/:pid", async (req, res) => {
+export const addProduct = async (req, res) => {
     const { cid, pid } = req.params;
     const { quantity } = req.body;
     try {
-        const cart = await cartsManager.addProductToCart(cid, pid, quantity);
+        const cart = await addProductToCart(cid, pid, quantity);
         if (cart === -1) {
             res.status(400).json({ message: 'Lo sentimos! No fue posible encontrar el carrito indicado' });
         } else {
@@ -42,12 +51,12 @@ router.post("/:cid/product/:pid", async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error });
     }
-});
+}
 
-router.put("/:cid", async (req, res) => {
+export const updateCart = async (req, res) => {
     const {cid} = req.params
     try{
-        const updatedProducts = await cartsManager.updateProductFromCart(cid, req.body); 
+        const updatedProducts = await cartsManager.updateProductFromCart(cid, req.body);
         if (updatedProducts === -1) {
             res.status(400).json({ message: 'Lo sentimos! No fue posible actualizar el carrito' });
         } else {
@@ -60,13 +69,13 @@ router.put("/:cid", async (req, res) => {
     catch (error){
         res.status(500).json({mesage: error})
     }
-})
+}
 
-router.put("/:cid/products/:pid", async (req, res) =>{
+export const updateQuantityFromOneProduct = async (req, res) =>{
     const {cid, pid} = req.params
     const {quantity} = req.body
     try {
-        const updatedQuantity = await cartsManager.updateQuantity(cid, pid, quantity);
+        const updatedQuantity = await updateQuantity(cid, pid, quantity);
         if (updatedQuantity === -1){
             res.status(400).json({message: 'Lo sentimos! No fue posible cambiar la cantidad del producto seleccionado'});
         } else {
@@ -75,12 +84,12 @@ router.put("/:cid/products/:pid", async (req, res) =>{
     } catch (error) {
         res.status(500).json({mesage: error})
     }
-})
+}
 
-router.delete("/:cid/products/:pid", async (req, res) =>{
+export const deleteOneProduct = async (req, res) =>{
     const {cid, pid} = req.params
     try {
-        const deletedProduct = await cartsManager.delProductFromCart(cid, pid)
+        const deletedProduct = await deleteOneProductFromCart(cid, pid)
         if (deletedProduct === -1){
             res.status(400).json({message: 'Lo sentimos! No fue posible eliminar el producto seleccionado'});
         } else {
@@ -89,12 +98,12 @@ router.delete("/:cid/products/:pid", async (req, res) =>{
     } catch (error) {
         res.status(500).json({mesage: error})
     }
-})
+}
 
-router.delete("/:cid", async (req, res) =>{
+export const deleteAllProducts = async (req, res) =>{
     const {cid} = req.params
     try {
-        const delAllProducts = await cartsManager.delAllProductsFromCart(cid)
+        const delAllProducts = await cleanCart(cid)
         if(delAllProducts === -1){
             res.status(400).json({message: 'Lo sentimos! No fue posible vaciar el carrito'});
         } else {
@@ -103,6 +112,4 @@ router.delete("/:cid", async (req, res) =>{
     } catch (error) {
         res.status(500).json({mesage: error})
     }
-})
-
-export default router
+}

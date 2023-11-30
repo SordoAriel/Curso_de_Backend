@@ -9,9 +9,6 @@ class CartsManager extends BasicManager {
   
   async addProductToCart(cid, pid, quantity=1) {
     try {
-      if (!mongoose.Types.ObjectId.isValid(cid)) {
-        return -1;
-      }
       const cart = await this.model.findOne({ _id: cid });
       if (!cart) {
         return -1; 
@@ -39,6 +36,7 @@ class CartsManager extends BasicManager {
       return -1;
     }
     const cart = await this.model.findOne({ _id: cid });
+    console.log('cart', cart)
     if (!cart) {
       return -1; 
     }

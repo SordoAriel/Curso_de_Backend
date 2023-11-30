@@ -12,7 +12,6 @@ class UsersManager extends BasicManager {
     const userFound = await this.model.findOne({email}).populate({ path: "cartId", populate: { path: "products.product" } })
     return userFound;
   }
-
 }
 
 export const usersManager = new UsersManager();
