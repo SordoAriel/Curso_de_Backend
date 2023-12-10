@@ -24,6 +24,21 @@ class ProductsManager extends BasicManager {
   }
 
   async updateStock(obj){
+    try {
+      const updateProducts = obj.map(async (p) => {
+        await this.model.updateOne(
+          { _id: p.product._id },
+          { $inc: { stock: -p.quantity } }
+        );
+      });
+      if(updateProducts){
+        return 1
+      } else {
+        return -1
+      }
+    } catch (error) {
+      console.error(error)
+    }
     
   }
 }

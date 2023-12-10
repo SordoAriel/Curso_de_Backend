@@ -60,11 +60,18 @@ export const newPurchase = async (req, res) => {
         const {cid} = req.params
         const { email } = req.user
         const purchase = await endPurchase(cid)
-        const ticket = await newTicket(purchase, email)
-        if(!ticket){
-            res.status(404).json("Parece que no fue posible finalizar la compra")
-        }else {
-            res.status(200).send({message: "Compra finalizada con éxito", "Datos de la compra": ticket})
+        if(purchase === -1){
+            res.status(404).json("Lo sentimos, parece que no hay productos en el carrito, o no contamos con stock suficiente")
+        } else {
+            const ticket = await newTicket(purchase.total, email)
+            if(!ticket){
+                res.status(404).json("Parece que no fue posible finalizar la compra")
+            }else {
+                res.status(200).send(
+                    {message: "Compra finalizada con éxito", 
+                    "Datos de la compra": ticket, 
+                    "Productos sin stock suficiente": purchase.notEnoughStockProducts})
+            }
         }
     } catch (error) {
         res.status(500).json({message: error.message})

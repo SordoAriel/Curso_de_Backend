@@ -1,6 +1,5 @@
 import { cartsModel } from "../models/carts.model.js";
 import { productsManager } from "./ProductsManager.js"
-import { ticketsModel } from "../models/tickets.model.js";
 import BasicManager from "./BasicManager.js";
 import mongoose from 'mongoose';
 
@@ -107,13 +106,25 @@ class CartsManager extends BasicManager {
     try {
     const purchase = await this.model.findOne({ _id: cid }).populate("products.product");
     const enoughStockProducts = purchase.products.filter(p => p.quantity <= p.product.stock)
-    const newStock = enoughStockProducts.map(p => p.product)
-    //const updatingStock = newStock.push(quantity)
-    //console.log('price',updatingStock)
-    //updateStock(updatingStock)
+    if(!enoughStockProducts.length){
+      return -1
+    }    
+    const notEnoughStockProducts = purchase.products.filter(p => p.quantity > p.product.stock)    
     const prices = enoughStockProducts.map(p => p.product.price * p.quantity)
     const total = prices.reduce((a, e) => a + e, 0)
-    return total
+    const response = {total, notEnoughStockProducts}
+    const updateStock = await productsManager.updateStock(enoughStockProducts)
+    if(updateStock === 1){
+      await this.model.updateOne(
+        { _id: cid },
+        {
+          $pull: {
+            products: { product: { $in: enoughStockProducts.map(p => p.product._id) } }
+          }
+        }
+      );
+    }
+    return response
     } catch (error) {
       return error 
     }
