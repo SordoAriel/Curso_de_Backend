@@ -22,6 +22,10 @@ class ProductsManager extends BasicManager {
     }
     return response
   }
+
+  async updateStock(obj){
+    
+  }
 }
 
 export const productsManager = new ProductsManager();

@@ -5,8 +5,10 @@ import {
     updateProductFromCart, 
     updateQuantity, 
     deleteOneProductFromCart, 
-    cleanCart 
+    cleanCart, 
+    endPurchase
 } from "../services/carts.services.js";
+import { newTicket } from "../services/tickets.services.js"
 
 export const findCart = async (req,res) => {
     const { cid } = req.params
@@ -50,6 +52,22 @@ export const addProduct = async (req, res) => {
         }
     } catch (error) {
         res.status(500).json({ message: error });
+    }
+}
+
+export const newPurchase = async (req, res) => {
+    try {
+        const {cid} = req.params
+        const { email } = req.user
+        const purchase = await endPurchase(cid)
+        const ticket = await newTicket(purchase, email)
+        if(!ticket){
+            res.status(404).json("Parece que no fue posible finalizar la compra")
+        }else {
+            res.status(200).send({message: "Compra finalizada con éxito", "Datos de la compra": ticket})
+        }
+    } catch (error) {
+        res.status(500).json({message: error.message})
     }
 }
 

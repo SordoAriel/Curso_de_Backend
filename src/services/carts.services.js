@@ -1,4 +1,5 @@
 import { cartsManager } from "../dao/DB/Managers/CartsManager.js";
+import { ticketsManager } from "../dao/DB/Managers/TicketsManager.js";
 import mongoose from "mongoose";
 
 export const getById = async (id) => {
@@ -25,7 +26,6 @@ export const updateCart = async (id, obj) => {
 }
 
 export const updateProductFromCart = (cid, obj) => {
-    console.log('obj', obj)
     const updatedProduct = cartsManager.updateProductFromCart(cid, obj);
     return updatedProduct
 }
@@ -41,11 +41,17 @@ export const deleteCart = async (id) => {
 }
 
 export const deleteOneProductFromCart = async (cid, pid) => {
-    const deletedProduct = cartsManager.deleteOneProductFromCart(cid, pid);
+    const deletedProduct = await cartsManager.deleteOneProductFromCart(cid, pid);
     return deletedProduct
 }
 
 export const cleanCart = async (pid) => {
-    const cleanedCart = cartsManager.delAllProductsFromCart(pid);
+    const cleanedCart = await cartsManager.delAllProductsFromCart(pid);
     return cleanedCart
+}
+
+export const endPurchase = async (cid) => {
+    
+    const purchase = await cartsManager.endPurchase(cid)
+    return purchase
 }

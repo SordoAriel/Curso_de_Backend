@@ -1,6 +1,7 @@
 import { Router }from 'express'
 import { 
     addProduct, 
+    newPurchase,
     deleteAllProducts, 
     createCart, 
     deleteOneProduct, 
@@ -17,6 +18,8 @@ router.get("/:cid", findCart)
 router.post("/", createCart)
 
 router.post("/:cid/product/:pid", usersAccess, addProduct);
+
+router.post("/:cid/purchase", newPurchase)
 
 router.put("/:cid", updateCart)
 

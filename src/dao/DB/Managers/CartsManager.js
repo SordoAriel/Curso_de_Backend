@@ -1,6 +1,8 @@
 import { cartsModel } from "../models/carts.model.js";
+import { productsManager } from "./ProductsManager.js"
+import { ticketsModel } from "../models/tickets.model.js";
 import BasicManager from "./BasicManager.js";
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 class CartsManager extends BasicManager {
   constructor() {
@@ -99,7 +101,23 @@ class CartsManager extends BasicManager {
     } catch (error) {
       return error
     }
-  }  
+  } 
+  
+  async endPurchase(cid){
+    try {
+    const purchase = await this.model.findOne({ _id: cid }).populate("products.product");
+    const enoughStockProducts = purchase.products.filter(p => p.quantity <= p.product.stock)
+    const newStock = enoughStockProducts.map(p => p.product)
+    //const updatingStock = newStock.push(quantity)
+    //console.log('price',updatingStock)
+    //updateStock(updatingStock)
+    const prices = enoughStockProducts.map(p => p.product.price * p.quantity)
+    const total = prices.reduce((a, e) => a + e, 0)
+    return total
+    } catch (error) {
+      return error 
+    }
+  }
 }
 
 export const cartsManager = new CartsManager();

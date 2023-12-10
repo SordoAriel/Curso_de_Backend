@@ -1,26 +1,14 @@
 import { usersManager } from "../dao/DB/Managers/usersManager.js";
+import { cleanedUser, cleanedUsers } from "../DTOs/users.dto.js"
 
 export const get = async () => {
     const users = await usersManager.get();
-    const cleanedUsers = users.map(u => (
-        {
-            Nombre: u.firstName, 
-            Apellido: u.lastName,
-            Email: u.email,
-            Rol: u.role 
-        }
-    ));
-    return cleanedUsers
+    const response = await cleanedUsers(users)
+    return response
 }
 
 export const getByEmail = async (email) => {
     const user = await usersManager.findByEmail(email);
-    const {firstName, lastName, role} = user
-    const cleanedUser = {
-        Nombre: firstName, 
-        Apellido: lastName,
-        Email: email,
-        Rol: role
-    }
-    return cleanedUser
+    const response = await cleanedUser(user)    
+    return response
 }
