@@ -38,8 +38,9 @@ export const chat = async (req,res) =>{
 export const products = async (req, res) =>{
     try {
       const products = await getWithAdvancedSearch(req.query);
-      const cartId = await req.user.cartId.toString()
-      res.status(200).render("products", {products, firstName: req.user.firstName, cid: cartId})
+      const cid = await req.user.cartId.toString()
+      const productsWithCid = products.payload.map(product => ({ ...product, cid: cid }));
+      res.status(200).render("products", {products: { payload: productsWithCid}, firstName: req.user.firstName, cid: cid})
     } catch (error) {
       return error
     }

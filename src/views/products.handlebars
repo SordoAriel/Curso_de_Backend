@@ -1,6 +1,6 @@
 <h1>Productos:</h1>
 <h2 id="firstName">Cliente: {{firstName}}!</h2>
-<form method="POST" action="/api/carts/6537ba2f730bccd42fb97fd9/purchase">
+<form method="POST" action="/api/carts/{{cid}}/purchase">
                 <button type="submit">Finalizar compra</button>
             </form>
 <button onclick="location.href='/api/sessions/logout'">Cerrar sesión</button>
@@ -21,7 +21,7 @@
             <td>{{code}}</td>
             <td>{{thumbnail}}</td>
             <td>{{price}}</td>
-            <form id="formHeader" method="POST" action="/api/carts/655520e9602ccc046a7ad21b/product/{{id}}">
+            <form id="formHeader" method="POST" action="/api/carts/{{cid}}/product/{{id}}">
                 <td><input type="number" name="quantity" min="1" max="{{stock}}"></td>
                 <td><button type="submit">Añadir al carrito</button></td>
             </form>

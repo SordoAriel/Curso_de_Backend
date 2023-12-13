@@ -10,8 +10,7 @@ class TicketsManager{
         const newCode = lastCode + 1;
         const code = newCode.toString()
         const date = new Date()
-        const purchase_datatime = new Date(date.getTime() + (3 * 60 * 60 * 1000));
-        const newTicket = await this.model.create({code: code, amount: amount, purchase_datatime: purchase_datatime, purchaser: email})
+        const newTicket = await this.model.create({code: code, amount: amount, purchase_datatime: date, purchaser: email})
         return newTicket;
     }
 }

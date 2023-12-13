@@ -37,7 +37,7 @@ class ProductsManager extends BasicManager {
         return -1
       }
     } catch (error) {
-      console.error(error)
+      error
     }
     
   }

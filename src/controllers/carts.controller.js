@@ -9,6 +9,7 @@ import {
     endPurchase
 } from "../services/carts.services.js";
 import { newTicket } from "../services/tickets.services.js"
+import { transporter } from "../nodemailer.js";
 
 export const findCart = async (req,res) => {
     const { cid } = req.params
@@ -67,6 +68,17 @@ export const newPurchase = async (req, res) => {
             if(!ticket){
                 res.status(404).json("Parece que no fue posible finalizar la compra")
             }else {
+                const purchaseConfirmMail = {
+                    from: 'a.a.sordo@gmail.com',
+                    to: email,
+                    subject: `Compra efectuada n°${ticket.code} - Ferretería Ferros`,
+                    html: `<h1>Código de su compra:${ticket.code}</h1>
+                            <h2>Monto total a pagar: ${ticket.amount}</h2>
+                            <h3>Cliente: ${req.user.firstName} ${req.user.lastName}</h3>
+                            <p>Fecha de la compra: ${ticket.purchase_datatime}</p>
+                        `
+                }
+                await transporter.sendMail(purchaseConfirmMail)
                 res.status(200).send(
                     {message: "Compra finalizada con éxito", 
                     "Datos de la compra": ticket, 
