@@ -1,3 +1,6 @@
+import CustomizedError from "../errors/customized.errors.js";
+import { errorMessages } from "../errors/errors.enum.js";
+
 export const logout = async (req, res) =>{
     req.session.destroy(() =>{
         res.redirect("http://localhost:8080/login")
@@ -7,7 +10,7 @@ export const logout = async (req, res) =>{
 export const currentUser = async (req, res) =>{
     try {
         if(!req.user){
-            res.status(401).json("Oops! Parece que no estás logueado")
+            CustomizedError.currentError(errorMessages.UNAUTENTICATED)
         } else {
             const user = {
                 Nombre: req.user.firstName,
@@ -19,6 +22,6 @@ export const currentUser = async (req, res) =>{
             res.status(200).json({Datos_del_usuario: user})
         }
     } catch (error) {
-        res.status(500).json(error)
+        res.status(500).json({message: error.message})
     }
 };

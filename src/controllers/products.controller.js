@@ -1,15 +1,17 @@
 import { get, getById, create, update, deleteOne } from "../services/products.services.js";
 import { ProductsManager } from '../dao/FS/ProductManagerFS.js';
+import CustomizedError from "../errors/customized.errors.js";
+import { errorMessages } from "../errors/errors.enum.js";
 
 export const getAllProducts = async (req,res)=>{
     try {
         const products = await get(req.query);
         if (!products) {
-          res.status(400).json({ message: 'Oops! Parece que hubo un error en tu búsqueda'})
+          CustomizedError.currentError(errorMessages.CANT_FIND_PRODUCT)
         }
         res.status(200).json({ message: 'Productos encontrados:', products: products });
       } catch (error) {
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ message: error.message });
       }
     }
 
@@ -18,12 +20,12 @@ export const getProductById = async (req,res)=>{
       try {
         const productSearch = await getById(pid)
         if (!productSearch) {
-          res.status(400).json({ message: 'Product not found with the id sent' })
+          CustomizedError.currentError(errorMessages.CANT_FIND_PRODUCT)
         } else {
           res.status(200).json({ message: 'Product: ', productSearch })
         }
       } catch (error) {
-        res.status(500).json({ message: error })
+        res.status(500).json({ message: error.message })
       }
 }
 
@@ -33,7 +35,7 @@ export const newProduct = async (req, res)=>{
       return req.body.push(thumbnail=[]) 
     }
     if (!title || !description || !price || !code || !stock || !category) {
-      return res.status(400).json({ message: "Oops! Parece que falta algún dato obligatorio" });
+      CustomizedError.currentError(errorMessages.CANT_CREATE_PRODUCT)
     }  
     const products = await ProductsManager.getProducts()
     if (products.some(product => product.code === code)) {
@@ -50,7 +52,7 @@ export const newProduct = async (req, res)=>{
     res.status(200).json({ message: "Producto createdo", product: newProduct })
       const newProductFS = await ProductsManager.addProduct(req.body);
     } catch (error) {
-      res.status(500).json({ message: error });
+      res.status(500).json({ message: error.message });
     }
 }
 
@@ -59,12 +61,12 @@ export const updateProduct = async (req, res) => {
   try {
     const productSearch = await update(pid, req.body);
     if (productSearch === -1) {
-      res.status(400).json({ message: "Lo sentimos! No fue posible encontrar el producto indicado" });
+      CustomizedError.currentError(errorMessages.CANT_FIND_PRODUCT)
     } else {
       res.status(200).json({ message: "Producto actualizado correctamente", productSearch});
     }
   } catch (error) {
-    res.status(500).json({ message: error });
+    res.status(500).json({ message: error.message });
   }
 }
 
@@ -73,11 +75,11 @@ export const deleteProduct = async (req, res) => {
   try {
       const productDelete = await deleteOne(pid);
       if (productDelete === -1) {
-          res.status(400).json({ message: "Lo sentimos! No fue posible encontrar ese producto" });
+        CustomizedError.currentError(errorMessages.CANT_FIND_PRODUCT)
       } else {
           res.status(200).json({ message: "Producto eliminado" });
       }
   } catch (error) {
-      res.status(500).json({ message: error });
+      res.status(500).json({ message: error.message });
   }
 }

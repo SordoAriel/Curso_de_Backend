@@ -1,5 +1,6 @@
 import { mongoose } from 'mongoose'
 import { getProducts,  getByIdAndPopulate, getWithAdvancedSearch } from '../services/views.services.js';
+import { generateMockProduct } from '../faker.js';
 
 export const home = async (req,res)=>{
     const {limit} = req.query
@@ -72,4 +73,17 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
     res.render('login')
+}
+
+export const mockProducts = async (req, res) => {
+  try {
+    let products = []
+    for( let i = 0; i < 100; i++){
+      const newProduct = await generateMockProduct();
+      products.push(newProduct)
+  }
+      res.status(200).send(products)
+  } catch (error) {
+    res.status(500).send(message.error)
+  }
 }

@@ -51,7 +51,6 @@ export const cleanCart = async (pid) => {
 }
 
 export const endPurchase = async (cid) => {
-    
     const purchase = await cartsManager.endPurchase(cid)
     return purchase
 }

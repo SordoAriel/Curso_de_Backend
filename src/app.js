@@ -16,6 +16,7 @@ import MongoStore from 'connect-mongo';
 import passport from 'passport';
 import './passport.js';
 import config from './config.js'
+import { errorMiddleware } from './errors/error.middleware.js';
 
 const app = express()
 
@@ -47,6 +48,7 @@ app.use('/api/carts', cartRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/sessions', sessionRouter)
 app.use('/', viewRouter)
+app.use(errorMiddleware)
 
 const httpServer = app.listen(8080, () => {
     console.log('Escuchando al puerto 8080')

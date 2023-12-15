@@ -10,17 +10,20 @@ import {
 } from "../services/carts.services.js";
 import { newTicket } from "../services/tickets.services.js"
 import { transporter } from "../nodemailer.js";
+import CustomizedError from "../errors/customized.errors.js";
+import { errorMessages } from "../errors/errors.enum.js";
 
 export const findCart = async (req,res) => {
     const { cid } = req.params
     try {
         const displayCart = await getById(cid)
         if(!displayCart){
-            res.status(400).json({ message: "Lo sentimos, no pudimos encontrar tu compra" });
-        }
+            CustomizedError.currentError(errorMessages.CANT_FIND_CART)
+        } else {
         res.status(200).json({ message: "Búsqueda exitosa", cart: displayCart });
+        }
     } catch (error) {
-        res.status(500).json({ message: error });
+        res.status(500).send({ message: error.message });
     }
 }
 
@@ -44,7 +47,7 @@ export const addProduct = async (req, res) => {
     try {
         const cart = await addProductToCart(cid, pid, quantity);
         if (cart === -1) {
-            res.status(400).json({ message: 'Lo sentimos! No fue posible encontrar el carrito indicado' });
+            CustomizedError.currentError(errorMessages.CANT_FIND_CART)
         } else {
             res.status(200).json({
                 message: 'Se añadió el producto al carrito correctamente',
@@ -52,7 +55,7 @@ export const addProduct = async (req, res) => {
             });
         }
     } catch (error) {
-        res.status(500).json({ message: error });
+        res.status(500).json({ message: error.message });
     }
 }
 
@@ -62,11 +65,11 @@ export const newPurchase = async (req, res) => {
         const { email } = req.user
         const purchase = await endPurchase(cid)
         if(purchase === -1){
-            res.status(404).json("Lo sentimos, parece que no hay productos en el carrito, o no contamos con stock suficiente")
+            CustomizedError.currentError(errorMessages.NOTHING_TO_PURCHASE)
         } else {
             const ticket = await newTicket(purchase.total, email)
             if(!ticket){
-                res.status(404).json("Parece que no fue posible finalizar la compra")
+                CustomizedError.currentError(errorMessages.CANT_PURCHASE)
             }else {
                 const purchaseConfirmMail = {
                     from: 'a.a.sordo@gmail.com',
@@ -95,7 +98,7 @@ export const updateCart = async (req, res) => {
     try{
         const updatedProducts = await cartsManager.updateProductFromCart(cid, req.body);
         if (updatedProducts === -1) {
-            res.status(400).json({ message: 'Lo sentimos! No fue posible actualizar el carrito' });
+            CustomizedError.currentError(errorMessages.CANT_UPDATE_CART)
         } else {
             res.status(200).json({
                 message: 'Carrito actualizado',
@@ -104,7 +107,7 @@ export const updateCart = async (req, res) => {
         }
     }
     catch (error){
-        res.status(500).json({mesage: error})
+        res.status(500).json({mesage: error.message})
     }
 }
 
@@ -114,7 +117,7 @@ export const updateQuantityFromOneProduct = async (req, res) =>{
     try {
         const updatedQuantity = await updateQuantity(cid, pid, quantity);
         if (updatedQuantity === -1){
-            res.status(400).json({message: 'Lo sentimos! No fue posible cambiar la cantidad del producto seleccionado'});
+            CustomizedError.currentError(errorMessages.CANT_UPDATE_CART)
         } else {
             res.status(200).json({ message: 'Carrito actualizado', products: updatedQuantity})
         }
@@ -128,12 +131,12 @@ export const deleteOneProduct = async (req, res) =>{
     try {
         const deletedProduct = await deleteOneProductFromCart(cid, pid)
         if (deletedProduct === -1){
-            res.status(400).json({message: 'Lo sentimos! No fue posible eliminar el producto seleccionado'});
+            CustomizedError.currentError(errorMessages.CANT_DELETE_CARTS_PRODUCTS)
         } else {
             res.status(200).json({ message: 'Carrito actualizado'})
         }
     } catch (error) {
-        res.status(500).json({mesage: error})
+        res.status(500).json({mesage: error.message})
     }
 }
 
@@ -142,11 +145,11 @@ export const deleteAllProducts = async (req, res) =>{
     try {
         const delAllProducts = await cleanCart(cid)
         if(delAllProducts === -1){
-            res.status(400).json({message: 'Lo sentimos! No fue posible vaciar el carrito'});
+            CustomizedError.currentError(errorMessages.CANT_DELETE_CARTS_PRODUCTS)
         } else {
             res.status(200).json({ message: 'Carrito vaciado'})
         }    
     } catch (error) {
-        res.status(500).json({mesage: error})
+        res.status(500).json({mesage: error.message})
     }
 }

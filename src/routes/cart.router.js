@@ -7,7 +7,7 @@ import {
     deleteOneProduct, 
     findCart, 
     updateCart, 
-    updateQuantityFromOneProduct 
+    updateQuantityFromOneProduct
 } from '../controllers/carts.controller.js'
 import { usersAccess } from '../middlewares/middlewares.js'
 
