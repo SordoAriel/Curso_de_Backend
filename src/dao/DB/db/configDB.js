@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
+import config from '../../../config.js'
+import { logger } from '../../../winston.js'
 
-const URI = 'mongodb+srv://aasordo:MongoProjectCoder@clusterecommerceferros.askegga.mongodb.net/EcommerceFFerros?retryWrites=true&w=majority&appName=AtlasApp'
-
-mongoose.connect(URI) 
-.then(()=> console.log('Connected to DB'))
-.catch((error) => console.log(error))
+mongoose.connect(config.mongo_uri) 
+.then(()=> logger.info('Connected to DB'))
+.catch((error) => logger.fatal('Couldnt connect to DB:', error))
 

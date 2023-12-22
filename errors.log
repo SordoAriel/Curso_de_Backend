@@ -1,0 +1,95 @@
+{
+  message: 'Logger inicializado correctamente',
+  level: 'info',
+  timestamp: '07:11 17-12-2023 PM'
+}
+{
+  message: 'Escuchando al puerto 8080',
+  level: 'info',
+  timestamp: '07:11 17-12-2023 PM'
+}
+{
+  message: 'Connected to DB',
+  level: 'info',
+  timestamp: '07:11 17-12-2023 PM'
+}
+{
+  message: 'Escuchando al puerto 8080',
+  level: 'info',
+  timestamp: '07:17 17-12-2023 PM'
+}
+{
+  message: 'Connected to DB',
+  level: 'info',
+  timestamp: '07:17 17-12-2023 PM'
+}
+{
+  message: 'Escuchando al puerto 8080',
+  level: 'info',
+  timestamp: '07:20 17-12-2023 PM'
+}
+{
+  message: 'Connected to DB',
+  level: 'info',
+  timestamp: '07:20 17-12-2023 PM'
+}
+{
+  message: 'Escuchando al puerto 8080',
+  level: 'info',
+  timestamp: '07:21 17-12-2023 PM'
+}
+{
+  message: 'Connected to DB',
+  level: 'info',
+  timestamp: '07:21 17-12-2023 PM'
+}
+{
+  message: 'Escuchando al puerto 8080',
+  level: 'info',
+  timestamp: '08:22 PM 17-12-2023'
+}
+{
+  message: 'Connected to DB',
+  level: 'info',
+  timestamp: '08:22 PM 17-12-2023'
+}
+{
+  message: 'Escuchando al puerto 8080',
+  level: 'info',
+  timestamp: '08:23 PM 17-12-2023'
+}
+{
+  message: 'Connected to DB',
+  level: 'info',
+  timestamp: '08:23 PM 17-12-2023'
+}
+{
+  message: 'Escuchando al puerto 8080',
+  level: 'info',
+  timestamp: '08:24 PM 17-12-2023'
+}
+{
+  message: 'Connected to DB',
+  level: 'info',
+  timestamp: '08:24 PM 17-12-2023'
+}
+{
+  message: 'Escuchando al puerto 8080',
+  level: 'info',
+  timestamp: '08:25 PM 17-12-2023'
+}
+{
+  message: 'Connected to DB',
+  level: 'info',
+  timestamp: '08:25 PM 17-12-2023'
+}
+{
+  message: 'Escuchando al puerto 8080',
+  level: 'info',
+  timestamp: '08:26 PM 17-12-2023'
+}
+{
+  message: 'Connected to DB',
+  level: 'info',
+  timestamp: '08:26 PM 17-12-2023'
+}

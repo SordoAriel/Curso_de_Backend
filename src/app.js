@@ -17,6 +17,7 @@ import passport from 'passport';
 import './passport.js';
 import config from './config.js'
 import { errorMiddleware } from './errors/error.middleware.js';
+import { logger } from './winston.js';
 
 const app = express()
 
@@ -51,15 +52,15 @@ app.use('/', viewRouter)
 app.use(errorMiddleware)
 
 const httpServer = app.listen(8080, () => {
-    console.log('Escuchando al puerto 8080')
+    logger.info('Escuchando al puerto 8080')
   })
 
 const socketServer = new Server(httpServer)
 
 socketServer.on('connection', (socket) => {
-  console.log('Nuevo cliente en línea')
+  logger.info('Nuevo cliente conectado al chat')
   socket.on('disconnect',() => {
-    console.log('Cliente desconectado')
+    logger.info('Cliente desconectado')
   })
   socket.on('addProduct', async(product) => {
     const newProduct = await ProductsManager.addProduct(product)

@@ -5,6 +5,7 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { usersManager } from "./dao/DB/Managers/usersManager.js";
 import { cartsManager} from "./dao/DB/Managers/CartsManager.js"
 import { hashData, compareData } from "./utils.js";
+import { logger } from './winston.js'
 
 passport.use('signup', new LocalStrategy(
     {usernameField: 'email',
@@ -13,6 +14,7 @@ passport.use('signup', new LocalStrategy(
         try {
             const existingUser = await usersManager.findByEmail(email);
             if(existingUser){
+                logger.error('Intento de registro con email ya existente', email)
                 return done(null, false)
             }
             const hashedPassword = await hashData(password)
@@ -21,6 +23,7 @@ passport.use('signup', new LocalStrategy(
                 password:hashedPassword,
                 cartId: await cartsManager.add()
             })
+            logger.info('Nuevo usuario creado:', newUser.email, newUser.firstName, newUser.lastName)
             done(null, newUser)
         } catch (error) {
             done(error)
@@ -74,6 +77,7 @@ passport.use('google', new GoogleStrategy(
                     googleRegister: true
                 } 
                 const createdUser = await usersManager.add(newUser)
+                logger.info('Nuevo usuario creado desde google:', newUser.email, newUser.firstName, newUser.lastName)
                 done(null, createdUser)
             }
         } catch (error) {

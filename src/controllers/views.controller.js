@@ -1,6 +1,8 @@
 import { mongoose } from 'mongoose'
 import { getProducts,  getByIdAndPopulate, getWithAdvancedSearch } from '../services/views.services.js';
 import { generateMockProduct } from '../faker.js';
+import { logger } from '../winston.js';
+import fs from 'fs'
 
 export const home = async (req,res)=>{
     const {limit} = req.query
@@ -86,4 +88,23 @@ export const mockProducts = async (req, res) => {
   } catch (error) {
     res.status(500).send(message.error)
   }
+}
+
+export const loggerTest = (req, res) => {   
+  logger.fatal("fatal"),
+  logger.error("error"),
+  logger.warning("warning"),
+  logger.info("info"),
+  logger.http("http"),
+  logger.debug("debug")
+  const errorFiles = async () => {
+    try {
+      const errorsFile = await fs.promises.readFile('./errors.log', 'utf-8');
+    logger.http(errorsFile)
+    } catch (error) {
+      error.message
+    }
+  }
+  errorFiles()
+  logger.http('Ubicación de los loggers: carts.controller -> endPurchase / app.js -> Puerto & Conexión de cliente al chat & Desconexión de cliente al chat configDB.js -> conexión a la DB & error en la conexxión a la DB / middleware.js -> unauthorized / passport.js -> Estrategia local de signup')
 }

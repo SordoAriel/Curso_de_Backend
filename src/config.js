@@ -5,9 +5,9 @@ const env = program.opts().mode;
 
 dotenv.config({
     path: 
-    env === 'dev' ? '.env.development' : 
+    env === 'prod' ? '.env.production' : 
     env === 'test' ? '.env.testing' : 
-    env === 'prod' ? '.env.production' : console.log('No environment detected')
+    env === 'dev' ? '.env.development' : 'No environment detected'
 });
 
 export default {
@@ -16,5 +16,6 @@ export default {
     google_client_secret: process.env.GOOGLE_CLIENT_SECRET,
     google_callback_url: process.env.GOOGLE_CALLBACK_URL,
     gmail_user: process.env.GMAIL_USER,
-    gmail_pass: process.env.GMAIL_PASS
+    gmail_pass: process.env.GMAIL_PASS,
+    environment: env
 }

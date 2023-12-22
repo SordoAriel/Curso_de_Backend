@@ -12,6 +12,7 @@ import { newTicket } from "../services/tickets.services.js"
 import { transporter } from "../nodemailer.js";
 import CustomizedError from "../errors/customized.errors.js";
 import { errorMessages } from "../errors/errors.enum.js";
+import { logger } from "../winston.js"
 
 export const findCart = async (req,res) => {
     const { cid } = req.params
@@ -82,6 +83,7 @@ export const newPurchase = async (req, res) => {
                         `
                 }
                 await transporter.sendMail(purchaseConfirmMail)
+                logger.info(`Nuevo ticket registrado n°${ticket.code}`)
                 res.status(200).send(
                     {message: "Compra finalizada con éxito", 
                     "Datos de la compra": ticket, 
