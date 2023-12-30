@@ -7,5 +7,6 @@ export const errorMessages = {
     CANT_FIND_PRODUCT: 'Oops! Parece que hubo un error en tu búsqueda',
     CANT_CREATE_PRODUCT: "Oops! Parece que falta algún dato obligatorio",
     UNAUTHORIZED: "No estás autorizado para realizar esta acción",
-    UNAUTENTICATED: "Oops! Parece que no estás logueado"
+    UNAUTENTICATED: "Oops! Parece que no estás logueado",
+    MAIL_NOT_FOUND: "Lo sentimos! No pudimos encontrar el mail ingresado en nuestra base de datos"
 }

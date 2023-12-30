@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { cart, chat, home, login, products, realTimeProducts, signup, mockProducts, loggerTest } from "../controllers/views.controller.js";
+import { cart, chat, home, login, products, realTimeProducts, signup, mockProducts, loggerTest, newPassword } from "../controllers/views.controller.js";
 import { usersAccess } from "../middlewares/middlewares.js";
 
 const router = Router()
@@ -21,5 +21,7 @@ router.get('/login', login)
 router.get('/mockingproducts', mockProducts)
 
 router.get('/loggerTest', loggerTest)
+
+router.get('/newpassword/:email', newPassword)
 
 export default router

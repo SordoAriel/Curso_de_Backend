@@ -5,4 +5,14 @@
     Contraseña: <input type="password" name="password">
     <input type="submit" value="Ingresar"> 
 </form>
+
 <button onclick="location.href='http://localhost:8080/api/sessions/auth/google'">Google</button>
+
+<button id="resetPassBtn">¿Olvidaste tu contraseña?</button>
+<form id="resetPassForm" action="http://localhost:8080/api/users/resetpassword" method="POST" style="display:none;">
+    <p>Enviaremos un mail a tu casilla de correo para reestablecer tu contraseña</p>
+    Ingresar email: <input type="email" name="email">
+    <input type="submit" value="Enviar mail">
+</form>
+
+<script src="/js/login.js"></script>

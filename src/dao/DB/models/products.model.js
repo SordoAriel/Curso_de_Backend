@@ -34,6 +34,11 @@ const productsSchema = new Schema({
     status:{
       type: Boolean,
       default: true
+    },
+    owner: {
+      type: String,
+      required: true,
+      default: "admin"
     } 
 })
 

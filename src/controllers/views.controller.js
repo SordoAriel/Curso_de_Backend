@@ -108,3 +108,8 @@ export const loggerTest = (req, res) => {
   errorFiles()
   logger.http('Ubicación de los loggers: carts.controller -> endPurchase / app.js -> Puerto & Conexión de cliente al chat & Desconexión de cliente al chat configDB.js -> conexión a la DB & error en la conexxión a la DB / middleware.js -> unauthorized / passport.js -> Estrategia local de signup')
 }
+
+export const newPassword = (req, res) => {
+  const {email} = req.params
+  res.render('newPassword', {email: email})
+}
