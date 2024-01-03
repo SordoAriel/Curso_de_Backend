@@ -113,3 +113,7 @@ export const newPassword = (req, res) => {
   const {email} = req.params
   res.render('newPassword', {email: email})
 }
+
+export const manageProducts = (req, res) => {
+  res.render('manageProducts')
+}

@@ -15,8 +15,10 @@ class CartsManager extends BasicManager {
         return -1; 
       } else {
         const existingProduct = cart.products.find(p => p.product.toString() === pid);
+        console.log(quantity)
         if (existingProduct) {
           existingProduct.quantity += quantity;
+
         } else {
           const product = {
             product: pid,

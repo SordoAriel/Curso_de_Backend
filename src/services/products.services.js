@@ -20,7 +20,13 @@ export const update = async (pid, obj) => {
     return updatedProduct
 };
 
-export const deleteOne = async (pid) => {
+export const deleteOne = async (pid, currentUserRole, currentUserMail) => {
+    if(currentUserRole === "premium"){
+        const productToDelete = await productsManager.getById(pid);
+        if(productToDelete.owner !== currentUserMail){
+            return -1
+        }
+    }
     const deletedProduct = await productsManager.delete(pid);
     return deletedProduct
 }

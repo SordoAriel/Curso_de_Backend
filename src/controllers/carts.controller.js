@@ -45,15 +45,28 @@ export const createCart = async (req, res)=>{
 export const addProduct = async (req, res) => {
     const { cid, pid } = req.params;
     const { quantity } = req.body;
+    const quant = parseInt(quantity)
+    let email
+    if(req.user.role === "premium"){
+        email= req.user.email
+    } else {
+        email= " . "
+    }
     try {
-        const cart = await addProductToCart(cid, pid, quantity);
-        if (cart === -1) {
-            CustomizedError.currentError(errorMessages.CANT_FIND_CART)
-        } else {
-            res.status(200).json({
-                message: 'Se añadió el producto al carrito correctamente',
-                product: cart,
-            });
+        const cart = await addProductToCart(cid, pid, quant, email);
+        console.log(cart)
+        switch (cart) {
+            case -1:
+                CustomizedError.currentError(errorMessages.CANT_FIND_CART);
+                break;
+            case -2: 
+                return res.status(403).send("No puedes agregar tus propios productos a tu carrito");        
+            default:
+                res.status(200).json({
+                    message: 'Se añadió el producto al carrito correctamente',
+                    product: cart,
+                });
+                break;
         }
     } catch (error) {
         res.status(500).json({ message: error.message });

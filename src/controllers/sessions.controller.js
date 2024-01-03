@@ -9,6 +9,7 @@ export const logout = async (req, res) =>{
 
 export const currentUser = async (req, res) =>{
     try {
+        console.log(req.user)
         if(!req.user){
             CustomizedError.currentError(errorMessages.UNAUTENTICATED)
         } else {

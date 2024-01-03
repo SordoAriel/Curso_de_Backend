@@ -1,4 +1,5 @@
 import { cartsManager } from "../dao/DB/Managers/CartsManager.js";
+import { productsManager } from "../dao/DB/Managers/ProductsManager.js";
 import { ticketsManager } from "../dao/DB/Managers/TicketsManager.js";
 import mongoose from "mongoose";
 
@@ -12,12 +13,17 @@ export const newCart = async (obj) => {
     return cart
 }
 
-export const addProductToCart =async (cid, pid, quantity) => {
+export const addProductToCart =async (cid, pid, quantity, email) => {
     if (!mongoose.Types.ObjectId.isValid(cid)) {
         return -1;
       }
-    const addedProduct = cartsManager.addProductToCart(cid, pid, quantity);
-    return addedProduct
+      const productsOwner = await productsManager.getById(pid)
+      if(productsOwner.owner === email){
+        return -2
+      } else {
+        const addedProduct = cartsManager.addProductToCart(cid, pid, quantity);
+        return addedProduct
+    }
 }
 
 export const updateCart = async (id, obj) => {

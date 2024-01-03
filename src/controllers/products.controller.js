@@ -48,8 +48,11 @@ export const newProduct = async (req, res)=>{
       if ('id' in req.body) {
         delete req.body.id;
       }
-      const newProduct = await create(req.body)
-    res.status(200).json({ message: "Producto createdo", product: newProduct })
+      let owner 
+      req.user.role === "premium" ? owner= req.user.email : owner= "admin"
+      console.log('owner', owner)
+      const newProduct = await create({...req.body, owner})
+    res.status(200).json({ message: "Producto creado", product: newProduct })
       const newProductFS = await ProductsManager.addProduct(req.body);
     } catch (error) {
       res.status(500).json({ message: error.message });
@@ -71,9 +74,10 @@ export const updateProduct = async (req, res) => {
 }
 
 export const deleteProduct = async (req, res) => {
-  const { pid } = req.params;
+  const { pid } = req.body;
   try {
-      const productDelete = await deleteOne(pid);
+      const currentUser = req.user
+      const productDelete = await deleteOne(pid, currentUser);
       if (productDelete === -1) {
         CustomizedError.currentError(errorMessages.CANT_FIND_PRODUCT)
       } else {

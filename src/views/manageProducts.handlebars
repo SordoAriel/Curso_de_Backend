@@ -1,0 +1,22 @@
+<h1>Creación de productos:</h1>
+
+<form action="http://localhost:8080/api/products" method="POST">
+Nombre del producto: <input type="name", name="title">
+Descripción: <input type="name" name="description">
+Código: <input type="name" name="code">
+Precio: <input type="number" name="price">
+Stock: <input type="number" name="stock">
+Categoría: <input type="name" name="category">
+Imágenes: <input type="url" name="thumbnail">
+<input type="submit" value="Cargar producto">
+
+</form>
+
+<h1>Eliminar producto</h1>
+<form id="deleteForm">
+<input type="hidden" name="_method" value="DELETE">
+Código del producto a eliminar: <input type="text", name="code">
+<input type="submit" value="Eliminar producto">
+</form>
+
+<script src="/js/manageProducts.js"></script>
