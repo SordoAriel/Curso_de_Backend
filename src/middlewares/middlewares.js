@@ -30,3 +30,20 @@ export const manageProductsAccess = (req, res, next) => {
         next()
     }
 }
+
+export const deleteProducts = (req, res, next) => {
+    const role = req.user.role;
+    switch (role) {
+        case "admin":
+            next()
+            break;
+        case "premium":
+            next()
+            break;
+        case "user":
+            logger.warning("Usuario intentando eliminar producto")
+            CustomizedError.currentError(errorMessages.UNAUTHORIZED)
+            break;
+        break;
+    }
+}

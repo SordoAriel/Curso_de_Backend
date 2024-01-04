@@ -14,9 +14,10 @@ Imágenes: <input type="url" name="thumbnail">
 
 <h1>Eliminar producto</h1>
 <form id="deleteForm">
-<input type="hidden" name="_method" value="DELETE">
-Código del producto a eliminar: <input type="text", name="code">
+
+Id del producto a eliminar: <input type="text" name="pid" id="pid">
 <input type="submit" value="Eliminar producto">
 </form>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/js/manageProducts.js"></script>

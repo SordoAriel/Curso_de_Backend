@@ -1,19 +1,25 @@
-document.getElementById('deleteForm').addEventListener('submit', function(e) {
+document.getElementById('deleteForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
     const pid = document.getElementById('pid').value;
-    console.log(pid)
 
     fetch(`http://localhost:8080/api/products/${pid}`, {
         method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-        },
     })
-    .then(response => {
-        console.log(response);
+    try {
+        response => {
+            console.log(response)
+            return Swal.fire({
+                title: response,
+                timer: 2000
+              });
+        }
+    } catch (error) {
+            console.error(error.message)
+            return Swal.fire({
+                title: error,
+                timer: 2000
+              });
+        }
     })
-    .catch(error => {
-        console.error(error);
-    });
-});
+    

@@ -74,16 +74,16 @@ export const updateProduct = async (req, res) => {
 }
 
 export const deleteProduct = async (req, res) => {
-  const { pid } = req.body;
+  const { pid } = req.params;
   try {
       const currentUser = req.user
       const productDelete = await deleteOne(pid, currentUser);
       if (productDelete === -1) {
         CustomizedError.currentError(errorMessages.CANT_FIND_PRODUCT)
       } else {
-          res.status(200).json({ message: "Producto eliminado" });
+        res.status(200).json("Producto eliminado");
       }
-  } catch (error) {
-      res.status(500).json({ message: error.message });
+    } catch (error) {
+      res.status(500).send(error.message);
   }
 }

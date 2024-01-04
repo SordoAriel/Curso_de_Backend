@@ -1,6 +1,6 @@
 import { Router }from 'express'
 import { deleteProduct, getAllProducts, getProductById, newProduct, updateProduct } from '../controllers/products.controller.js';
-import { adminAccess, manageProductsAccess } from '../middlewares/middlewares.js';
+import { adminAccess, manageProductsAccess, deleteProducts } from '../middlewares/middlewares.js';
 
 const router = Router();
 
@@ -12,6 +12,6 @@ router.post("/", manageProductsAccess,  newProduct);
 
 router.put("/:pid", adminAccess, updateProduct);
 
-router.delete("/:pid", manageProductsAccess, deleteProduct);
+router.delete("/:pid", deleteProducts, deleteProduct);
 
 export default router
