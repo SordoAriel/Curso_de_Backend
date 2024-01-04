@@ -2,6 +2,7 @@ import { get, getByEmail, changePassword, updateRol } from "../services/users.se
 import CustomizedError from "../errors/customized.errors.js";
 import { errorMessages } from "../errors/errors.enum.js";
 import { transporter } from "../nodemailer.js";
+import { generateToken, verifyToken } from "../jwt.js";
 
 export const getAllUsers = async (req, res) => {
     const users = await get();
@@ -37,7 +38,7 @@ export const resetPassword = async (req, res) => {
                     <h2> Estimado cliente ${user.Nombre} ${user.Apellido}:</h2>
                     <h2> Email: ${email}</h2>
                     <p>Para reestablecer tu contraseña, haga click en el enlace a continuación y siga las instrucciones</p>
-                    <a href="http://localhost:8080/newpassword/${email}">Nueva contraseña</a>
+                    <a href="http://localhost:8080/newpassword/${email}?token=${encodeURIComponent(generateToken())}">Nueva contraseña</a>
                 `
         }
         await transporter.sendMail(resetPassMail)
@@ -49,11 +50,18 @@ export const resetPassword = async (req, res) => {
 }
 
 export const newPassword = async (req, res) => {
-    const {email} = req.params
+    /*console.log('1', req.params)
+    console.log('2', req.query)
+    console.log('3', req.query.token)
+    const token = req.query.token;*/
+    const { email } = req.params;
     const {password} = req.body
+
+    /*const isValidLink = verifyToken(token)
+    console.log('validLink', isValidLink)*/
     try {
+        //if(isValidLink){
         const passwordChange = await changePassword(email, password)
-        console.log('passchange', passwordChange)
         if(passwordChange === -1){
             CustomizedError.currentError(errorMessages.MAIL_NOT_FOUND)
         } 
@@ -63,6 +71,8 @@ export const newPassword = async (req, res) => {
         if (passwordChange === 1) {
             res.redirect("http://localhost:8080/login")
         }
+    //}
+    
     } catch (error) {
         error.message
     }
