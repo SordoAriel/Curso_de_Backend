@@ -8,7 +8,7 @@ router.get("/", getAllProducts);
     
 router.get("/:pid", getProductById);
 
-router.post("/", manageProductsAccess,  newProduct);
+router.post("/", manageProductsAccess, newProduct);
 
 router.put("/:pid", adminAccess, updateProduct);
 

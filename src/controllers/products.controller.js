@@ -13,7 +13,7 @@ export const getAllProducts = async (req,res)=>{
       } catch (error) {
         res.status(500).json({ message: error.message });
       }
-    }
+    }    
 
 export const getProductById = async (req,res)=>{
     const {pid} = req.params
@@ -22,12 +22,12 @@ export const getProductById = async (req,res)=>{
         if (!productSearch) {
           CustomizedError.currentError(errorMessages.CANT_FIND_PRODUCT)
         } else {
-          res.status(200).json({ message: 'Product: ', productSearch })
+          res.status(200).json({ message: 'Producto: ', productSearch })
         }
       } catch (error) {
         res.status(500).json({ message: error.message })
       }
-}
+} 
 
 export const newProduct = async (req, res)=>{
     const { title, description, price, thumbnail, code, status, stock, category } = req.body;
@@ -57,7 +57,7 @@ export const newProduct = async (req, res)=>{
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
-}
+} 
 
 export const updateProduct = async (req, res) => {
   const { pid } = req.params;

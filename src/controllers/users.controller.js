@@ -38,7 +38,7 @@ export const resetPassword = async (req, res) => {
                     <h2> Estimado cliente ${user.Nombre} ${user.Apellido}:</h2>
                     <h2> Email: ${email}</h2>
                     <p>Para reestablecer tu contraseña, haga click en el enlace a continuación y siga las instrucciones</p>
-                    <a href="http://localhost:8080/newpassword/${email}?token=${encodeURIComponent(generateToken())}">Nueva contraseña</a>
+                    <a href='http://localhost:8080/newpassword/${email}?token=${encodeURIComponent(generateToken())}'>Nueva contraseña</a>
                 `
         }
         await transporter.sendMail(resetPassMail)

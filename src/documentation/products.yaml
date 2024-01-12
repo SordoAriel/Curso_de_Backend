@@ -1,0 +1,196 @@
+paths:
+  /api/products:
+    get:
+      summary: productos
+      tags:
+        - Products
+      responses:
+        '200':
+          description: 'Productos encontrados:'
+          content:
+            application/json:
+              schemas:
+                $ref: '#/components/schemas/Products'
+              example:
+                _id: 192438unklvmjk
+                title: Taladro
+                description: B&D 710w
+                code: B&DTAL710w
+                price: 24000
+                stock: 15
+                category: Máquinas
+                thumbnail: []
+                status: true
+                owner: admin
+        '500':
+          description: 'Error'
+
+    post:
+      summary: Creación de un producto nuevo
+      tags:
+        - Products
+      responses:
+        '200':
+          description: 'Producto creado'
+          content:
+            application/json:
+              schemas:
+                $ref: '#/components/schemas/Products'
+              example:
+                _id: 192438unklvmjk
+                title: Taladro
+                description: B&D 710w
+                code: B&DTAL710w
+                price: 24000
+                stock: 15
+                category: Máquinas
+                thumbnail: []
+                status: true
+                owner: admin
+        '500':
+          description: 'Error'
+
+  /api/products/:pid:
+    get:
+      summary: Búsqueda de un producto por el id
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: product Id
+      responses:
+        '200':
+          description: 'Producto:'
+          content:
+            application/json:
+              schemas:
+                $ref: '#/components/schemas/Products'
+              example:
+                _id: 192438unklvmjk
+                title: Taladro
+                description: B&D 710w
+                code: B&DTAL710w
+                price: 24000
+                stock: 15
+                category: Máquinas
+                thumbnail: []
+                status: true
+                owner: admin
+        '500':
+          description: 'Error'
+
+    put:
+      summary: Update product by Id
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: product Id
+      responses:
+        '200':
+          description: 'Producto:'
+          content:
+            application/json:
+              schemas:
+                $ref: '#/components/schemas/Products'
+              example:
+                _id: 192438unklvmjk
+                title: Taladro
+                description: B&D 710w
+                code: B&DTAL710w
+                price: 24000
+                stock: 15
+                category: Máquinas
+                thumbnail: []
+                status: true
+                owner: admin
+        '500':
+          description: 'Error'
+
+    delete:
+      summary: Eliminación de un producto
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: product Id
+      responses:
+        '200':
+          description: 'Producto eliminado'
+        '500':
+          description: 'Error'
+
+components:
+  schemas:
+    Products:
+      type: object
+      properties: 
+        _id: 
+          type: MongoObjectId
+        title:
+          type: string
+        description:
+          type: string
+        code: 
+          type: string
+        price:
+          type: number
+        stock:
+          type: number
+        category: 
+          type: string
+        thumbnail: 
+          type: array
+        status:
+          type: boolean
+        owner:
+          type: string
+      example:
+        _id: 2323wsfdsd
+        title: Amoladora
+        description: Marca B&D 800w
+        code: B&DAmol800w
+        price: 40000
+        stock: 10
+        category: Máquinas
+        thumbnail: [https://images.fravega.com/f1000/9b40d49dbe248e2e2f0f45fbab96046d.jpg]
+        status: true
+        owner: admin
+  requestBodies:
+    create&update:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        code: 
+          type: string
+        price:
+          type: number
+        stock:
+          type: number
+        category: 
+          type: string
+        thumbnail: 
+          type: array
+        status:
+          type: boolean
+        owner:
+          type: string
+      example: 
+        title: Taladro
+        description: B&D 710w
+        code: B&DTAL710w
+        price: 24000
+        stock: 15
+        category: Máquinas
+        thumbnail: []
+        status: true
+        owner: admin

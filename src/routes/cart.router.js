@@ -1,12 +1,11 @@
 import { Router }from 'express'
 import { 
-    addProduct, 
+    addProduct,
     newPurchase,
     deleteAllProducts, 
     createCart, 
     deleteOneProduct, 
-    findCart, 
-    updateCart, 
+    findCart,
     updateQuantityFromOneProduct
 } from '../controllers/carts.controller.js'
 import { usersAccess } from '../middlewares/middlewares.js'
@@ -21,11 +20,9 @@ router.post("/:cid/product/:pid", usersAccess, addProduct);
 
 router.post("/:cid/purchase", newPurchase)
 
-router.put("/:cid", updateCart)
+router.put("/:cid/product/:pid", updateQuantityFromOneProduct)
 
-router.put("/:cid/products/:pid", updateQuantityFromOneProduct)
-
-router.delete("/:cid/products/:pid", deleteOneProduct)
+router.delete("/:cid/product/:pid", deleteOneProduct)
 
 router.delete("/:cid", deleteAllProducts)
 

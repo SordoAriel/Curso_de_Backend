@@ -18,6 +18,8 @@ import './passport.js';
 import config from './config.js'
 import { errorMiddleware } from './errors/error.middleware.js';
 import { logger } from './winston.js';
+import { swaggerSetup } from './swaggerSpecs.js';
+import SwaggerUi from 'swagger-ui-express';
 
 const app = express()
 
@@ -48,6 +50,7 @@ app.use('/api/products', productsRouter)
 app.use('/api/carts', cartRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/sessions', sessionRouter)
+app.use('/api/docs', SwaggerUi.serve, SwaggerUi.setup(swaggerSetup))
 app.use('/', viewRouter)
 app.use(errorMiddleware)
 

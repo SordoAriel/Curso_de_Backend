@@ -34,25 +34,6 @@ class CartsManager extends BasicManager {
     }
   }
 
-  async updateProductFromCart(cid, obj){
-    if (!mongoose.Types.ObjectId.isValid(cid)) {
-      return -1;
-    }
-    const cart = await this.model.findOne({ _id: cid });
-    console.log('cart', cart)
-    if (!cart) {
-      return -1; 
-    }
-    try {
-      cart.products = [];
-      cart.products.push(...obj)
-      await cart.save();
-      return cart
-    } catch (error) {
-      return error
-    }
-  }
-
   async updateQuantity(cid, pid, quantity){
     if (!mongoose.Types.ObjectId.isValid(cid)) {
       return -1;

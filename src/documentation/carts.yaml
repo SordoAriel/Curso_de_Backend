@@ -1,0 +1,224 @@
+paths:
+  /api/carts/{cid}:
+    get:
+      summary: Devuelve un carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cart Id   
+      responses:
+        '200':
+          description: 'Búsqueda exitosa'
+          content:
+            application/json:
+              schemas:
+                $ref: '#/components/schemas/Carts'
+              example:
+                _id: 2323wsfdsd
+                products:
+                  - product: 12i3unhbca9811
+                    quantity: 2
+                  - product: 134mjnbca34fdg
+                    quantity: 4
+        '500':
+          description: 'Error'
+    
+    delete:
+      summary: Delete all products from cart
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cart Id   
+      responses:
+        '200':
+          description: 'Carrito vaciado'
+        '400':
+          description: 'Error'
+
+  /api/carts:
+    post: 
+      summary: Crea un nuevo carrito
+      tags:
+        - Carts
+      responses:
+        '201':
+          description: 'Nuevo carrito creado'
+          content:
+            application/json:
+              schemas:
+                $ref: '#/components/schemas/Carts'
+              example:
+                _id: 2323wsfdsd
+                products: []
+        '400':
+          description: 'error'
+
+  /api/carts/{cid}/product/{pid}:
+    post:
+      summary: Agrega un producto al carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cart Id
+        - name: pid
+          in: path
+          required: true
+          description: productId
+      responses:
+        '200':
+          description: 'Se añadió el producto al carrito correctamente'
+          content:
+            application/json:
+              schemas:
+                $ref: '#/components/schemas/Carts'
+              example:
+                _id: 2323wsfdsd
+                products:
+                  - product: 12i3unhbca9811
+                    quantity: 2
+                  - product: 134mjnbca34fdg
+                    quantity: 4
+                  - product: 234oinglksd872
+                    quantity: 1
+        '403':
+          description: 'No puedes agregar tus propios productos a tu carrito'
+        '500': 
+          description: 'Error'
+
+    put:        
+      summary: Modifica la cantidad de un producto en el carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cart Id
+        - name: pid
+          in: path
+          required: true
+          description: product Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/updateQuantity'
+      responses:
+        '200':
+          description: 'Carrito actualizado'
+          content:
+            application/json:
+              schemas:
+                $ref: '#/components/schemas/Carts'
+              example:
+                _id: 2323wsfdsd
+                products:
+                  - product: 12i3unhbca9811
+                    quantity: 2
+                  - product: 134mjnbca34fdg
+                    quantity: 4
+                  - product: 234oinglksd872
+                    quantity: 5
+        '500':
+          description: 'Error'
+    
+    delete:        
+      summary: Elimina un producto en el carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cart Id
+        - name: pid
+          in: path
+          required: true
+          description: productId
+      responses:
+        '200':
+          description: 'Carrito actualizado'
+          content:
+            application/json:
+              schemas:
+                $ref: '#/components/schemas/Carts'
+              example:
+                _id: 2323wsfdsd
+                products:
+                  - product: 12i3unhbca9811
+                    quantity: 2
+                  - product: 234oinglksd872
+                    quantity: 1
+        '500': 
+          description: 'Error'
+
+  /api/carts/{cid}/purchase:
+    post:
+      summary: Finaliza una compra
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cart Id
+      responses:
+        '200':
+          description: 'Compra finalizada con éxito'
+          content:
+            application/json:
+              schemas:
+                $ref: '#/components/schemas/Carts'
+              example:
+                _id: 2323wsfdsd
+                products:
+                  - product: 12i3unhbca9811
+                    quantity: 2
+                  - product: 234oinglksd872
+                    quantity: 1
+        '500':
+          description: 'Error'
+
+components:
+  schemas:
+    Carts:
+      type: object
+      properties:
+        _id:
+          type: string
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                type: string
+              quantity:
+                type: number
+
+      example:
+        _id: 2323wsfdsd
+        products:
+          - product: 12i3unhbca9811
+            quantity: 2
+          - product: 134mjnbca34fdg
+            quantity: 4
+  requestBodies:
+    updateQuantity:
+      type: object
+      properties:
+        quantity:
+          type: number
+      example: 
+        quantity: 8
+        
+ 

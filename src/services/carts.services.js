@@ -26,16 +26,6 @@ export const addProductToCart =async (cid, pid, quantity, email) => {
     }
 }
 
-export const updateCart = async (id, obj) => {
-    const updatedCart = await cartsManager.update(id, obj);
-    return updatedCart
-}
-
-export const updateProductFromCart = (cid, obj) => {
-    const updatedProduct = cartsManager.updateProductFromCart(cid, obj);
-    return updatedProduct
-}
-
 export const updateQuantity = async (cid, pid, quantity) => {
     const updatedQuantity = cartsManager.updateQuantity(cid, pid, quantity);
     return updatedQuantity
