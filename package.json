@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon src/app.js --mode dev",
-    "start:test": "nodemon src/app.js --mode test",
+    "start:productstest": "mocha test/products.test.js --mode test",
+    "start:cartstest": "mocha test/carts.test.js --mode test",
+    "start:sessionstest": "mocha test/sessions.test.js --mode test",
     "start:prod": "nodemon src/app.js --mode prod"
   },
   "keywords": [],
@@ -35,5 +37,10 @@
     "swagger-ui-express": "^5.0.0",
     "winston": "^3.11.0"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "chai": "^5.0.0",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.4"
+  }
 }

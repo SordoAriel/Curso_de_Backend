@@ -58,3 +58,21 @@ if(config.environment === 'dev'){
         ]
     })
 }
+
+if(config.environment === 'test'){
+    logger= winston.createLogger({
+        levels: customLevels.levels,
+        transports: [
+            new winston.transports.Console({
+                level: 'debug',
+                format: winston.format.combine(
+                    winston.format.colorize({colors: customLevels.colors}),
+                    winston.format.timestamp({
+                        format: 'hh:mm A DD-MM-YYYY'
+                    }),
+                    winston.format.simple(),
+                )
+            }),
+        ]
+    })
+}

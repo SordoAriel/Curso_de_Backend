@@ -30,9 +30,9 @@ export const getProductById = async (req,res)=>{
 } 
 
 export const newProduct = async (req, res)=>{
-    const { title, description, price, thumbnail, code, status, stock, category } = req.body;
-    if (!thumbnail in req.body){
-      return req.body.push(thumbnail=[]) 
+    let { title, description, price, thumbnail, code, status, stock, category } = req.body;
+    if (!Array.isArray(thumbnail) || !req.body.thumbnail) {
+      req.body.thumbnail = [];
     }
     if (!title || !description || !price || !code || !stock || !category) {
       CustomizedError.currentError(errorMessages.CANT_CREATE_PRODUCT)
@@ -41,19 +41,14 @@ export const newProduct = async (req, res)=>{
     if (products.some(product => product.code === code)) {
       return res.status(400).json({ message: "Articulo ya existente" });
     }
-    if (!Array.isArray(thumbnail)) {
-      req.body.thumbnail = [];
-    }
     try {
-      if ('id' in req.body) {
-        delete req.body.id;
+      if ('_id' in req.body) {
+        delete req.body._id;
       }
       let owner 
       req.user.role === "premium" ? owner= req.user.email : owner= "admin"
-      console.log('owner', owner)
       const newProduct = await create({...req.body, owner})
     res.status(200).json({ message: "Producto creado", product: newProduct })
-      const newProductFS = await ProductsManager.addProduct(req.body);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
