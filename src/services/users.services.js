@@ -1,6 +1,6 @@
 import { usersManager } from "../dao/DB/Managers/usersManager.js";
 import { cleanedUser, cleanedUsers } from "../DTOs/users.dto.js"
-import { hashData, compareData } from "../utils.js";
+import { hashData, compareData } from "../utils/utils.js";
 
 export const get = async () => {
     const users = await usersManager.get();
@@ -10,7 +10,7 @@ export const get = async () => {
 
 export const getByEmail = async (email) => {
     const user = await usersManager.findByEmail(email);
-    const response = await cleanedUser(user)    
+    const response = cleanedUser(user)    
     return response
 }
 

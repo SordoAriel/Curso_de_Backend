@@ -1,7 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import { currentUser, logout } from "../controllers/sessions.controller.js";
-import { usersAccess } from "../middlewares/middlewares.js";
+import { authorizationMiddleware } from "../middlewares/middlewares.js";
 
 
 const router = Router();
@@ -23,5 +23,5 @@ router.get('/auth/google/callback',
   passport.authenticate('google', { successRedirect: '/products', failureRedirect: '/login' })
 );
 
-router.get('/current', usersAccess, currentUser)
+router.get('/current', authorizationMiddleware(["user", "premium"]), currentUser)
 export default router

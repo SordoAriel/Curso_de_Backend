@@ -19,7 +19,7 @@
             <td>{{title}}</td>
             <td>{{description}}</td>
             <td>{{code}}</td>
-            <td>{{thumbnail}}</td>
+            <td><img class="productImg" src={{thumbnail}}></td>
             <td>{{price}}</td>
             <form id="formHeader" method="POST" action="/api/carts/{{cid}}/product/{{id}}">
                 <td><input type="number" name="quantity" min="1" max="{{stock}}"></td>

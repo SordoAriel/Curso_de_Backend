@@ -42,6 +42,6 @@ const productsSchema = new Schema({
     } 
 })
 
-productsSchema.plugin(mongoosePaginate)
+const paginate =productsSchema.plugin(mongoosePaginate)
 
-export const productsModel = model('products', productsSchema)
+export const productsModel = model('products', paginate)

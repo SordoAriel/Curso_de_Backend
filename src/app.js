@@ -4,7 +4,7 @@ import cartRouter from './routes/cart.router.js'
 import viewRouter from './routes/views.router.js'
 import sessionRouter from './routes/session.router.js'
 import usersRouter from './routes/users.router.js' 
-import { __dirname } from "./utils.js";
+import { __dirname } from "./utils/utils.js";
 import { engine } from 'express-handlebars'
 import { Server } from 'socket.io'
 import { ProductsManager } from './dao/FS/ProductManagerFS.js';
@@ -14,12 +14,12 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
-import './passport.js';
-import config from './config.js'
+import './config/passport.js';
+import config from './config/config.js'
 import { errorMiddleware } from './errors/error.middleware.js';
-import { logger } from './winston.js';
-import { swaggerSetup } from './swaggerSpecs.js';
+import { logger } from './utils/winston.js';
 import SwaggerUi from 'swagger-ui-express';
+import { swaggerSetup } from './utils/swaggerSpecs.js';
 
 const app = express()
 
@@ -40,7 +40,9 @@ app.use(session({
   },
   store: new MongoStore({
     mongoUrl: config.mongo_uri
-  })
+  }),
+  saveUninitialized: false,
+  resave: false
 }))
 
 app.use(passport.initialize());

@@ -1,8 +1,8 @@
 import { get, getByEmail, changePassword, updateRol } from "../services/users.services.js"
 import CustomizedError from "../errors/customized.errors.js";
 import { errorMessages } from "../errors/errors.enum.js";
-import { transporter } from "../nodemailer.js";
-import { generateToken, verifyToken } from "../jwt.js";
+import { transporter } from "../utils/nodemailer.js";
+import { generateNewPassToken, verifyToken } from "../config/jwt.js";
 
 export const getAllUsers = async (req, res) => {
     const users = await get();
@@ -30,6 +30,7 @@ export const resetPassword = async (req, res) => {
     if(!user){
         CustomizedError.currentError(errorMessages.MAIL_NOT_FOUND)
     } else {
+        const token = generateNewPassToken(email)
         const resetPassMail = {
             from: 'a.a.sordo@gmail.com',
             to: email,
@@ -38,7 +39,7 @@ export const resetPassword = async (req, res) => {
                     <h2> Estimado cliente ${user.Nombre} ${user.Apellido}:</h2>
                     <h2> Email: ${email}</h2>
                     <p>Para reestablecer tu contraseña, haga click en el enlace a continuación y siga las instrucciones</p>
-                    <a href='http://localhost:8080/newpassword/${email}?token=${encodeURIComponent(generateToken())}'>Nueva contraseña</a>
+                    <a href='http://localhost:8080/newpassword/${token}'>Nueva contraseña</a>
                 `
         }
         await transporter.sendMail(resetPassMail)
@@ -50,17 +51,11 @@ export const resetPassword = async (req, res) => {
 }
 
 export const newPassword = async (req, res) => {
-    /*console.log('1', req.params)
-    console.log('2', req.query)
-    console.log('3', req.query.token)
-    const token = req.query.token;*/
-    const { email } = req.params;
+    const token = req.params.email;
     const {password} = req.body
-
-    /*const isValidLink = verifyToken(token)
-    console.log('validLink', isValidLink)*/
+    const email = await verifyToken(token);
     try {
-        //if(isValidLink){
+        if(email){
         const passwordChange = await changePassword(email, password)
         if(passwordChange === -1){
             CustomizedError.currentError(errorMessages.MAIL_NOT_FOUND)
@@ -71,7 +66,7 @@ export const newPassword = async (req, res) => {
         if (passwordChange === 1) {
             res.redirect("http://localhost:8080/login")
         }
-    //}
+     }
     
     } catch (error) {
         error.message

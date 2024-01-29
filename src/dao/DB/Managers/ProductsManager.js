@@ -8,6 +8,8 @@ class ProductsManager extends BasicManager {
   async getWithAdvancedSearch(obj){
     const {limit=10, page=1, sort:sortByPrice, ...query} = obj
     const advancedSearch = await this.model.paginate(query, {limit, page, sort:{price: sortByPrice==='asc' ? 1 : -1  }, lean:true})
+    const prevLink = advancedSearch.hasPrevPage ? `http://localhost:8080/products?page=${advancedSearch.prevPage}&limit=${limit}` : null
+    const nextLink = advancedSearch.hasNextPage ? `http://localhost:8080/products?page=${advancedSearch.nextPage}&limit=${limit}` : null
     const response = {
       status: advancedSearch.totalDocs >= 1 ? 'success' : 'error',
       payload: advancedSearch.docs,
@@ -17,10 +19,10 @@ class ProductsManager extends BasicManager {
       nextPage: advancedSearch.nextPage,
       hasPrevPage: advancedSearch.hasPrevPage,
       hasNextPage: advancedSearch.hasNextPage,
-      prevLink: advancedSearch.hasPrevPage ? `http://localhost:8080/products?page=${advancedSearch.prevPage}` : null,
-      nextLink: advancedSearch.hasNextPage ? `http://localhost:8080/products?page=${advancedSearch.nextPage}` : null
+      prevLink: prevLink,
+      nextLink: nextLink
     }
-    return response
+    return response;
   }
 
   async updateStock(obj){

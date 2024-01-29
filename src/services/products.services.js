@@ -1,6 +1,6 @@
 import { productsManager } from "../dao/DB/Managers/ProductsManager.js";
 
-export const get = async (queries) => {
+export const getAll = async (queries) => {
     const products = await productsManager.getWithAdvancedSearch(queries);
     return products
 };
@@ -21,15 +21,31 @@ export const update = async (pid, obj) => {
 };
 
 export const deleteOne = async (pid, currentUser) => {
-    if(currentUser.role === 'premium'){
-        const productToDelete = await productsManager.getById(pid);
-        if(productToDelete.owner !== currentUser.email){
-            return -1
-        } else {
-            const deletedProduct = await productsManager.delete(pid);
-            return deletedProduct
+    try {
+        if(currentUser.role === 'premium'){
+            const productToDelete = await productsManager.getById(pid);
+            if(!productToDelete){
+                return -1
+            }
+            if(productToDelete.owner !== currentUser.email){
+                return -1
+            } else {
+                const deletedProduct = await productsManager.delete(pid);
+                return deletedProduct
+            }
         }
+        if(currentUser.role === 'admin'){
+            const productToDelete = await productsManager.getById(pid);
+            if(!productToDelete){
+                return -1
+            } else {
+                const deletedProduct = await productsManager.delete(pid);
+                return deletedProduct
+            }
+        }
+    } catch (error) {
+        return -1
     }
-    const deletedProduct = await productsManager.delete(pid);
-    return deletedProduct
+    
+    
 }

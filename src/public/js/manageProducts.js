@@ -1,3 +1,5 @@
+
+
 document.getElementById('deleteForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
@@ -6,20 +8,27 @@ document.getElementById('deleteForm').addEventListener('submit', function (e) {
     fetch(`http://localhost:8080/api/products/${pid}`, {
         method: 'DELETE',
     })
-    try {
-        response => {
-            console.log(response)
-            return Swal.fire({
-                title: response,
-                timer: 2000
-              });
-        }
-    } catch (error) {
-            console.error(error.message)
-            return Swal.fire({
-                title: error,
-                timer: 2000
-              });
+    .then(res => {
+        console.log('res', res)
+        if (res.ok) {
+            return res.json(); 
+        } else {
+            throw new Error('No fue posible encontrar el producto');
         }
     })
-    
+    .then(data => {
+        console.log('data',data)
+        if( data.message === "Producto eliminado"){
+            return Swal.fire({
+                title: data.message,
+                timer: 2000
+            });
+        }
+    })
+    .catch(error => {
+        return Swal.fire({
+            title: error.message,
+            timer: 2000
+        });
+    })
+});

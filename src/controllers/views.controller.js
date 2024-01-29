@@ -1,7 +1,7 @@
 import { mongoose } from 'mongoose'
 import { getProducts,  getByIdAndPopulate, getWithAdvancedSearch } from '../services/views.services.js';
-import { generateMockProduct } from '../faker.js';
-import { logger } from '../winston.js';
+import { generateMockProduct } from '../utils/faker.js';
+import { logger } from '../utils/winston.js';
 import fs from 'fs'
 
 export const home = async (req,res)=>{
@@ -43,7 +43,19 @@ export const products = async (req, res) =>{
       const products = await getWithAdvancedSearch(req.query);
       const cid = await req.user.cartId.toString()
       const productsWithCid = products.payload.map(product => ({ ...product, cid: cid }));
-      res.status(200).render("products", {products: { payload: productsWithCid}, firstName: req.user.firstName, cid: cid})
+      const response = {
+        status: products.status, 
+        payload: productsWithCid,
+        totalPages: products.totalPages,
+        page: products.page,
+        prevPage: products.prevPage,
+        nextPage: products.nextPage,
+        hasPrevPage: products.hasPrevPage,
+        hasNextPage: products.hasNextPage,
+        prevLink: products.prevLink,
+        nextLink: products.nextLink
+      }
+      res.status(200).render("products", {products: response, firstName: req.user.firstName, cid: cid})
     } catch (error) {
       return error
     }
@@ -110,8 +122,8 @@ export const loggerTest = (req, res) => {
 }
 
 export const newPassword = (req, res) => {
-  const {email} = req.params
-  res.render('newPassword', {email: email})
+  const token = req.params.email
+  res.render('newPassword', {token}) 
 }
 
 export const manageProducts = (req, res) => {

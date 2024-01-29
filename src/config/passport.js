@@ -2,10 +2,11 @@ import passport from "passport";
 import config from "./config.js";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import { usersManager } from "./dao/DB/Managers/usersManager.js";
-import { cartsManager} from "./dao/DB/Managers/CartsManager.js"
-import { hashData, compareData } from "./utils.js";
-import { logger } from './winston.js'
+import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt";
+import { usersManager } from "../dao/DB/Managers/usersManager.js";
+import { cartsManager} from "../dao/DB/Managers/CartsManager.js"
+import { hashData, compareData } from "../utils/utils.js";
+import { logger } from '../utils/winston.js'
 
 passport.use('signup', new LocalStrategy(
     {usernameField: 'email',
@@ -85,6 +86,17 @@ passport.use('google', new GoogleStrategy(
         }
     }
 ));
+
+passport.use('jwt', new JwtStrategy({
+    secretOrKey: config.jwt_secret_key,
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+}, 
+async (jwt_payload, done) => {
+    console.log(jwt_payload),
+    done(null, jwt_payload)
+}
+
+))
 
 passport.serializeUser(function(user, done) {
     done(null, user._id);

@@ -8,10 +8,10 @@ import {
     endPurchase
 } from "../services/carts.services.js";
 import { newTicket } from "../services/tickets.services.js"
-import { transporter } from "../nodemailer.js";
+import { transporter } from "../utils/nodemailer.js";
 import CustomizedError from "../errors/customized.errors.js";
 import { errorMessages } from "../errors/errors.enum.js";
-import { logger } from "../winston.js"
+import { logger } from "../utils/winston.js"
 
 export const findCart = async (req,res) => {
     const { cid } = req.params

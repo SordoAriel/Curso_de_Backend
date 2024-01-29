@@ -1,11 +1,11 @@
-import { get, getById, create, update, deleteOne } from "../services/products.services.js";
+import { getAll, getById, create, update, deleteOne } from "../services/products.services.js";
 import { ProductsManager } from '../dao/FS/ProductManagerFS.js';
 import CustomizedError from "../errors/customized.errors.js";
 import { errorMessages } from "../errors/errors.enum.js";
 
 export const getAllProducts = async (req,res)=>{
     try {
-        const products = await get(req.query);
+        const products = await getAll(req.query);
         if (!products) {
           CustomizedError.currentError(errorMessages.CANT_FIND_PRODUCT)
         }
@@ -31,9 +31,9 @@ export const getProductById = async (req,res)=>{
 
 export const newProduct = async (req, res)=>{
     let { title, description, price, thumbnail, code, status, stock, category } = req.body;
-    if (!Array.isArray(thumbnail) || !req.body.thumbnail) {
-      req.body.thumbnail = [];
-    }
+    if(!thumbnail){
+      thumbnail = []
+    } 
     if (!title || !description || !price || !code || !stock || !category) {
       CustomizedError.currentError(errorMessages.CANT_CREATE_PRODUCT)
     }  
@@ -76,7 +76,7 @@ export const deleteProduct = async (req, res) => {
       if (productDelete === -1) {
         CustomizedError.currentError(errorMessages.CANT_FIND_PRODUCT)
       } else {
-        res.status(200).json("Producto eliminado");
+        res.status(200).send({message: "Producto eliminado"});
       }
     } catch (error) {
       res.status(500).send(error.message);
