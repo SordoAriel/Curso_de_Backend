@@ -7,6 +7,7 @@ import { usersManager } from "../dao/DB/Managers/usersManager.js";
 import { cartsManager} from "../dao/DB/Managers/CartsManager.js"
 import { hashData, compareData } from "../utils/utils.js";
 import { logger } from '../utils/winston.js'
+import { modifyLastConnection } from '../services/users.services.js'
 
 passport.use('signup', new LocalStrategy(
     {usernameField: 'email',
@@ -44,6 +45,8 @@ passport.use('login', new LocalStrategy(
             if(!isValidPassword){
                 return done(null, false)
             }
+            const userId = existingUser._id
+            const lastConnection = await modifyLastConnection(userId)
             return done(null, existingUser)
         } catch (error) {
             done(error)

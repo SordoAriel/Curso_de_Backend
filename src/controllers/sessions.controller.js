@@ -1,7 +1,10 @@
 import CustomizedError from "../errors/customized.errors.js";
 import { errorMessages } from "../errors/errors.enum.js";
+import { modifyLastConnection } from "../services/users.services.js"
 
 export const logout = async (req, res) =>{
+    const userId = req.user._id
+    const lastConnection = await modifyLastConnection(userId)
     req.session.destroy(() =>{
         res.redirect("http://localhost:8080/login")
     })

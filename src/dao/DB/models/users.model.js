@@ -35,6 +35,24 @@ const usersSchema = new Schema({
     googleRegister: {
         type: Boolean,
         default: false
+    },
+    documents: {
+        type: [
+            {
+                name: {
+                type: String
+                },
+                reference: {
+                    type: String
+                }
+            },
+        ],
+        default: [],
+        _id: false
+    },    
+    lastConnection: {
+        type: Date,
+        default: Date.now
     }
 })
 

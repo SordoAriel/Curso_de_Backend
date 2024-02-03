@@ -129,3 +129,14 @@ export const newPassword = (req, res) => {
 export const manageProducts = (req, res) => {
   res.render('manageProducts')
 }
+
+export const documentsUpload = (req, res) => {
+  const id = req.user._id
+  const name = req.user.firstName + ' ' + req.user.lastName
+  res.render('documentsUpload', {id, name})
+}
+
+export const changeUserRol = (req, res) => {
+  const user = req.user
+  res.render('changeUserRol', user)
+}

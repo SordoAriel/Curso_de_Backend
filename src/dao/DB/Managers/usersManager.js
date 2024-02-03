@@ -12,6 +12,14 @@ class UsersManager extends BasicManager {
     const userFound = await this.model.findOne({email}).populate({ path: "cartId", populate: { path: "products.product" } })
     return userFound;
   }
+
+  async updateMany(id, obj) {
+    const updateDocs = await this.model.updateMany({ _id: id, 'documents.name': { $in: obj.map(doc => doc.name) } },
+      { $set: { 'documents.$': obj } });
+    const user = await this.model.findById(id);
+    const userDocs = user.documents;
+    return userDocs;
+  }
 }
 
 export const usersManager = new UsersManager();

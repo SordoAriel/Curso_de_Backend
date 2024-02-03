@@ -8,6 +8,12 @@ export const get = async () => {
     return response
 }
 
+export const findById = async (id) => {
+    const user = await usersManager.getById(id);
+    const response = cleanedUser(user)
+    return response
+}
+
 export const getByEmail = async (email) => {
     const user = await usersManager.findByEmail(email);
     const response = cleanedUser(user)    
@@ -37,7 +43,24 @@ export const updateRol = async (email, rol) => {
         if(!user){
             return -1
         }
+        if(user.role === "user"){
+            if (!['identification', 'proofOfAdress', 'proofOfAccountStatus'].every(type => 
+                user.documents.some(doc => doc.name === user._id + '-' + type)
+              )) {
+                return -3;
+              }
+        }
+        
         const usersRol = await usersManager.update(user._id, {role: rol})
         return usersRol
     }
+}
+
+export const updateDocuments = async (id, docs) => {
+    const response = await usersManager.updateMany({_id: id}, docs)
+    return response
+}
+
+export const modifyLastConnection = async (id) => {
+    const newDate = await usersManager.update({_id: id}, {lastConnection: Date.now()})
 }

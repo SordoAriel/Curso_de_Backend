@@ -11,12 +11,13 @@ export const cleanedUsers = (obj) => {
 }
 
 export const cleanedUser = (obj) => {
-    const {firstName, lastName, role, email} = obj
+    const {firstName, lastName, role, email, documents} = obj
     const user = {
         Nombre: firstName, 
         Apellido: lastName,
         Email: email,
-        Rol: role
+        Rol: role,
+        Documentos: documents
     }
     return user
 }

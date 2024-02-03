@@ -1,0 +1,14 @@
+<h1>{{firstName}}</h1>
+
+<h2>Rol actual: {{role}}</h2>
+
+<h2>Cambiar rol</h2>
+<form action="http://localhost:8080/api/users/premium/{{email}}" method="post">
+<input type="text" list="rol" name="rol">
+    <input type="submit" value="Cambiar rol">
+</form>
+<datalist id="rol">
+    <option value="user">
+    <option value="premium">
+
+</datalist>
