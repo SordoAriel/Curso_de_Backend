@@ -20,6 +20,17 @@ class UsersManager extends BasicManager {
     const userDocs = user.documents;
     return userDocs;
   }
+
+  async deleteByEmail(email) {
+    const deletedUser = await this.model.deleteOne({email: email})
+    return cleanedUser(deletedUser)
+  }
+
+  async deleteMany(emails) {
+    const deletedUsers = await this.model.deleteMany({email: {$in: emails}})
+    return deletedUsers
+  }
+
 }
 
 export const usersManager = new UsersManager();

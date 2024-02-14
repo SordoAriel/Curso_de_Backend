@@ -3,6 +3,7 @@ import { getProducts,  getByIdAndPopulate, getWithAdvancedSearch } from '../serv
 import { generateMockProduct } from '../utils/faker.js';
 import { logger } from '../utils/winston.js';
 import fs from 'fs'
+import { get } from '../services/users.services.js';
 
 export const home = async (req,res)=>{
     const {limit} = req.query
@@ -65,8 +66,9 @@ export const cart = async (req, res) =>{
     const {cid} = req.params
     try {
       const displayCart = await getByIdAndPopulate(cid)
-      const populatedProducts = displayCart[0].products.map(product => {
+      const populatedProducts = displayCart.products.map(product => {
         return {
+          pid: product.product._id,
           title: product.product.title,
           description: product.product.description,
           code: product.product.code,
@@ -136,7 +138,7 @@ export const documentsUpload = (req, res) => {
   res.render('documentsUpload', {id, name})
 }
 
-export const changeUserRol = (req, res) => {
-  const user = req.user
-  res.render('changeUserRol', user)
+export const manageUsers = async (req, res) => {
+  const users = await get()
+  res.render('manageUsers', {users})
 }

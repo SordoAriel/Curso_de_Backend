@@ -13,6 +13,6 @@ export const getWithAdvancedSearch = async (obj) => {
 }
 
 export const  getByIdAndPopulate = async (cid) => {
-    const displayCurrentCart = await cartsManager.get(cid);
+    const displayCurrentCart = await cartsManager.getById(cid);
     return displayCurrentCart
 }

@@ -1,0 +1,31 @@
+<h1>Gestión de usuarios</h1>
+
+    <table>
+        {{#each users}}
+        <tr>
+            <td>{{Nombre}}</td>
+            <td>{{Apellido}}</td>
+            <td >{{Email}}</td>
+            <td>{{Rol}}</td>
+            <td>{{Ultima_Conexion}}</td>
+            <td><form action="http://localhost:8080/api/users/premium/{{Email}}" method="post">
+                    <input type="submit" value="Cambiar rol">
+                    <input type="text" list="rol" name="rol">
+                </form></td>
+            <td><form id="deleteOneForm" data-email="{{Email}}">
+                    <input type="submit" value="Eliminar">
+                </form></td>
+        </tr>
+        {{/each}}
+    </table>
+
+<button id="cleanInactiveBtn">Eliminar usuarios inactivos</button>
+
+
+<datalist id="rol">
+    <option value="user">
+    <option value="premium">
+
+</datalist>
+
+<script src="/js/manageUsers.js"></script>

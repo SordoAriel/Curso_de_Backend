@@ -1,8 +1,6 @@
 <h1>Productos:</h1>
 <h2 id="firstName">Cliente: {{firstName}}!</h2>
-<form method="POST" action="/api/carts/{{cid}}/purchase">
-                <button type="submit">Finalizar compra</button>
-            </form>
+<button onclick="location.href='/carts/{{cid}}'">Ir a mi carrito</button>
 <button onclick="location.href='/api/sessions/logout'">Cerrar sesión</button>
 
 <table class="tableStyle">

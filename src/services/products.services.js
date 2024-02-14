@@ -1,4 +1,5 @@
 import { productsManager } from "../dao/DB/Managers/ProductsManager.js";
+import { transporter } from "../utils/nodemailer.js";
 
 export const getAll = async (queries) => {
     const products = await productsManager.getWithAdvancedSearch(queries);
@@ -31,6 +32,26 @@ export const deleteOne = async (pid, currentUser) => {
                 return -1
             } else {
                 const deletedProduct = await productsManager.delete(pid);
+                if(productToDelete.owner !== "admin"){
+                    const eliminatedProductMail = {
+                        from: "a.a.sordo@gmail.com",
+                        to: productToDelete.owner,
+                        subject: "Aviso de producto eliminado",
+                        html:   `<h1>Producto eliminado de nuestra página de compras</h1>
+                                <p>Estimado usuario:</p>
+                                <p>Nos hemos visto en la necesidad de eliminar el siguiente producto de tu propiedad:</p>
+                                <p>Nombre: ${productToDelete.title}</p>
+                                <p>Descripción: ${productToDelete.description}</p> 
+                                <p>Código: ${productToDelete.code}</p>
+                                <p>Esto puede deberse a que no cumplía con nuestra política de Publicaciones,
+                                o a que pasó más de 90 días sin recibir visitas ni actualizaciones.</p>
+                                <p>Para más información, visita nuestros Términos y condiciones</p> 
+                                <p>Saludos cordiales</p>
+                                <p>Equipo de Ferretería Ferros</p>
+                            `
+                    }
+                    await transporter.sendMail(eliminatedProductMail)
+                }
                 return deletedProduct
             }
         }
@@ -40,6 +61,24 @@ export const deleteOne = async (pid, currentUser) => {
                 return -1
             } else {
                 const deletedProduct = await productsManager.delete(pid);
+                if(productToDelete.owner !== "admin"){
+                    const eliminatedProductMail = {
+                        from: "a.a.sordo@gmail.com",
+                        to: productToDelete.owner,
+                        subject: "Aviso de producto eliminado",
+                        html:   `<h1>Producto eliminado de nuestra página de compras</h1>
+                                <p>Estimado usuario:</p>
+                                <p>Nos hemos visto en la necesidad de eliminar el siguiente producto de tu propiedad:</p>
+                                <p>Nombre: ${productToDelete.title}</p>
+                                <p>Descripción: ${productToDelete.description}</p> 
+                                <p>Código: ${productToDelete.code}</p>
+                                <p>Esto puede deberse a que no cumplía con nuestra política de Publicaciones,
+                                o a que pasó más de 90 días sin recibir visitas ni actualizaciones.</p>
+                                <p>Para más información, visita nuestros Términos y condiciones</p> 
+                            `
+                    }
+                    await transporter.sendMail(eliminatedProductMail)
+                }
                 return deletedProduct
             }
         }

@@ -37,7 +37,7 @@ export const deleteCart = async (id) => {
 }
 
 export const deleteOneProductFromCart = async (cid, pid) => {
-    const deletedProduct = await cartsManager.deleteOneProductFromCart(cid, pid);
+    const deletedProduct = await cartsManager.delProductFromCart(cid, pid);
     return deletedProduct
 }
 

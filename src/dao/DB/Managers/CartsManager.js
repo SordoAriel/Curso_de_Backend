@@ -2,6 +2,7 @@ import { cartsModel } from "../models/carts.model.js";
 import { productsManager } from "./ProductsManager.js"
 import BasicManager from "./BasicManager.js";
 import mongoose from 'mongoose';
+import {ObjectId} from 'mongodb'
 
 class CartsManager extends BasicManager {
   constructor() {
@@ -15,7 +16,6 @@ class CartsManager extends BasicManager {
         return -1; 
       } else {
         const existingProduct = cart.products.find(p => p.product.toString() === pid);
-        console.log(quantity)
         if (existingProduct) {
           existingProduct.quantity += quantity;
 
@@ -46,7 +46,7 @@ class CartsManager extends BasicManager {
       if (!mongoose.Types.ObjectId.isValid(pid)) {
         return -1;
       }
-      const productToUpdate = await cart.products.find((p) => p._id === pid)
+      const productToUpdate = await cart.products.find((p) => p.product == pid)
       if (!productToUpdate) {
         return -1; 
       }
@@ -63,9 +63,15 @@ class CartsManager extends BasicManager {
       return -1;
     }
     try {
-      const cart = await this.model.findByIdAndUpdate(cid, { $pull: { products: { _id: pid } } });
+      const cart = await this.model.findById(cid)
       if (!cart) {
         return -1; 
+      }
+      const indexToDelete = cart.products.findIndex(p => p.product.toString() === pid);
+      if (indexToDelete !== -1) {
+        const updatedProducts = cart.products.filter((p, index) => index !== indexToDelete);
+        cart.products = updatedProducts;
+        await cart.save();
       }
       return cart
     } catch (error) {

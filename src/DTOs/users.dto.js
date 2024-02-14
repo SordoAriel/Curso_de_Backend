@@ -1,10 +1,11 @@
-export const cleanedUsers = (obj) => {
-    const allUsers = obj.map(u => (
+export const cleanedUsers = async (obj) => {
+    const allUsers = await obj.map(u => (
         {
             Nombre: u.firstName, 
             Apellido: u.lastName,
             Email: u.email,
-            Rol: u.role 
+            Rol: u.role,
+            Ultima_Conexion: u.lastConnection 
         }
     ))
     return allUsers

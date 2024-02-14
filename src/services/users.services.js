@@ -64,3 +64,18 @@ export const updateDocuments = async (id, docs) => {
 export const modifyLastConnection = async (id) => {
     const newDate = await usersManager.update({_id: id}, {lastConnection: Date.now()})
 }
+
+export const del = async (email) => {
+    const userToDelete = await usersManager.deleteByEmail(email)
+    return userToDelete
+}
+
+export const deleteInactive = async () => {
+    const users = await usersManager.get()
+    const notAdminUsers = users.filter( u => u.role !== "admin")
+    const twoHoursAgo = Date.now() - (2 * 60 * 60 * 1000); 
+    const filteredUsers = notAdminUsers.filter(u => u.lastConnection < twoHoursAgo);
+    const usersToDelete = filteredUsers.map(u => u.email)
+    await usersManager.deleteMany(usersToDelete)
+    return cleanedUsers(filteredUsers)
+}

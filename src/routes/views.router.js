@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { cart, chat, home, login, products, realTimeProducts, signup, mockProducts, loggerTest, newPassword, manageProducts, documentsUpload, changeUserRol } from "../controllers/views.controller.js";
+import { cart, chat, home, login, products, realTimeProducts, signup, mockProducts, loggerTest, newPassword, manageProducts, documentsUpload, manageUsers } from "../controllers/views.controller.js";
 import { authorizationMiddleware } from "../middlewares/middlewares.js";
 
 const router = Router()
@@ -28,6 +28,6 @@ router.get('/manageProducts', authorizationMiddleware(["admin", "premium"]), man
 
 router.get('/documentsUpload', documentsUpload)
 
-router.get('/changeUserRol', changeUserRol)
+router.get('/manageUsers', authorizationMiddleware(["admin"]), manageUsers)
 
 export default router

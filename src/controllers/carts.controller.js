@@ -53,7 +53,6 @@ export const addProduct = async (req, res) => {
     }
     try {
         const cart = await addProductToCart(cid, pid, quant, email);
-        console.log(cart)
         switch (cart) {
             case -1:
                 CustomizedError.currentError(errorMessages.CANT_FIND_CART);
@@ -110,8 +109,9 @@ export const newPurchase = async (req, res) => {
 export const updateQuantityFromOneProduct = async (req, res) =>{
     const {cid, pid} = req.params
     const {quantity} = req.body
+    const quant = parseInt(quantity)
     try {
-        const updatedQuantity = await updateQuantity(cid, pid, quantity);
+        const updatedQuantity = await updateQuantity(cid, pid, quant);
         if (updatedQuantity === -1){
             CustomizedError.currentError(errorMessages.CANT_UPDATE_CART)
         } else {

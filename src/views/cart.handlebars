@@ -1,25 +1,44 @@
 <h1>Su carrito:</h1>
-<p hidden id="cid">{{cid}}</p>
 
 <table class="tableStyle">
-    <tr class="tableRowStyle">
-        <th>Nombre</th>
-        <th>Descripción</th>
-        <th>Código</th>
-        <th>Imagen</th>
-        <th>Precio</th>
-        <th>Cantidad</th>
-    </tr>
+    {{#if populatedProducts}}
+        <tr class="tableRowStyle">
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Código</th>
+            <th>Imagen</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+        </tr>
         {{#each populatedProducts}}
-    <tr class="tableRowStyle" id="productRow{{_id}}">
-            <td>{{title}}</td>
-            <td>{{description}}</td>
-            <td>{{code}}</td>
-            <td>{{thumbnail}}</td>
-            <td>{{price}}</td>
-            <td>{{quantity}}</td>
-    </tr>
+            <tr class="tableRowStyle">
+                <td>{{title}}</td>
+                <td>{{description}}</td>
+                <td>{{code}}</td>
+                <td>{{thumbnail}}</td>
+                <td>{{price}}</td>
+                <form id="changeQuantityForm" data-pid="{{pid}}">
+                    <td><input class="quantity" type="number" name="quantity" value="{{quantity}}" min="1" max="{{stock}}"></td>
+                    <td><input type="submit" value="Modificar cantidad"></td>
+                </form>
+                <form id="deleteProductForm" data-pid="{{pid}}">
+                    <td><button type="submit">Eliminar producto</button></td>
+                </form>
+            </tr>
         {{/each}}
+    {{else}}
+        <p>Aún no tienes ningún producto en tu carrito</p>
+    {{/if}}
 </table>
+
+<p hidden id="cid">{{cid}}</p>
+
+<form id="deleteAllProductsForm">
+    <input type="submit" value="Vaciar carrito">
+</form>
+
+<form method="POST" action="/api/carts/{{cid}}/purchase">
+                <button type="submit">Finalizar compra</button>
+            </form>
 
 <script src="/js/cart.js"></script>
