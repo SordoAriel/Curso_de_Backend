@@ -56,8 +56,8 @@ app.use('/api/docs', SwaggerUi.serve, SwaggerUi.setup(swaggerSetup))
 app.use('/', viewRouter)
 app.use(errorMiddleware)
 
-const httpServer = app.listen(8080, () => {
-    logger.info('Escuchando al puerto 8080')
+const httpServer = app.listen(config.port, () => {
+    logger.info(`Escuchando al puerto ${config.port}`)
   })
 
 const socketServer = new Server(httpServer)
