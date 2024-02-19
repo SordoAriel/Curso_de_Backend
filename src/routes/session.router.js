@@ -9,11 +9,11 @@ const router = Router();
 router.get("/logout", logout);
 
 router.post('/signup', passport.authenticate('signup'), (req, res) =>{
-    res.status(200).redirect('http://localhost:8080/products')
+    res.status(200).redirect('/products')
 })
 
 router.post('/login', passport.authenticate('login'), (req, res) =>{
-    res.status(200).redirect('http://localhost:8080/products')
+    res.status(200).redirect('/products')
 })
 
 router.get('/auth/google',
