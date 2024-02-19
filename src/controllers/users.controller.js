@@ -152,6 +152,7 @@ export const addDocuments = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
     const {email} = req.params
+    console.log('llega al controller')
     try {
         const deletedUser = await del(email)
         res.status(200).send('Usuario eliminado', deletedUser)
