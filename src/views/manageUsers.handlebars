@@ -8,7 +8,7 @@
             <td >{{Email}}</td>
             <td>{{Rol}}</td>
             <td>{{Ultima_Conexion}}</td>
-            <td><form action="http://localhost:8080/api/users/premium/{{Email}}" method="post">
+            <td><form action="/api/users/premium/{{Email}}" method="post">
                     <input type="submit" value="Cambiar rol">
                     <input type="text" list="rol" name="rol">
                 </form></td>

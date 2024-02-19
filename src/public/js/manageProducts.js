@@ -3,7 +3,7 @@ document.getElementById('deleteForm').addEventListener('submit', function (e) {
 
     const pid = document.getElementById('pid').value;
 
-    fetch(`http://localhost:8080/api/products/${pid}`, {
+    fetch(`/api/products/${pid}`, {
         method: 'DELETE',
     })
     .then(res => {

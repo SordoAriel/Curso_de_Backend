@@ -95,7 +95,6 @@ passport.use('jwt', new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 }, 
 async (jwt_payload, done) => {
-    console.log(jwt_payload),
     done(null, jwt_payload)
 }
 

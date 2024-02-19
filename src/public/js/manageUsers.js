@@ -2,9 +2,9 @@ document.getElementById('deleteOneForm').addEventListener('submit', function (e)
     e.preventDefault();
     
     const email = this.dataset.email;
-    
+    console.log('entra al formulario')
 
-    fetch(`http://localhost:8080/api/users/${email}`, {
+    fetch(`/api/users/${email}`, {
         method: 'DELETE',
     })
     .then(res => {

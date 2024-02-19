@@ -9,7 +9,7 @@ document.querySelectorAll('#changeQuantityForm').forEach(form => {
         const quantity = quantityInput.value; 
     console.log(quantity)
     
-    fetch(`http://localhost:8080/api/carts/${cid}/product/${pid}`, {
+    fetch(`/api/carts/${cid}/product/${pid}`, {
         method: 'PUT',
         body: JSON.stringify({quantity: quantity}), 
         headers: { 'Content-Type': 'application/json' }
@@ -33,7 +33,7 @@ document.querySelectorAll('#deleteProductForm').forEach(form => {
         
         const pid = this.dataset.pid;
         
-        fetch(`http://localhost:8080/api/carts/${cid}/product/${pid}`, {
+        fetch(`/api/carts/${cid}/product/${pid}`, {
             method: 'DELETE',
         })
         .then(res => {
@@ -52,7 +52,7 @@ document.querySelectorAll('#deleteProductForm').forEach(form => {
 document.querySelector('#deleteAllProductsForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
-    fetch(`http://localhost:8080/api/carts/${cid}`, {
+    fetch(`/api/carts/${cid}`, {
         method: 'DELETE'
     })
     .then(res => {

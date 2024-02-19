@@ -6,7 +6,7 @@ export const logout = async (req, res) =>{
     const userId = req.user._id
     const lastConnection = await modifyLastConnection(userId)
     req.session.destroy(() =>{
-        res.redirect("http://localhost:8080/login")
+        res.redirect("/login")
     })
 };
 

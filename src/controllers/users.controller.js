@@ -40,7 +40,7 @@ export const resetPassword = async (req, res) => {
                     <h2> Estimado cliente ${user.Nombre} ${user.Apellido}:</h2>
                     <h2> Email: ${email}</h2>
                     <p>Para reestablecer tu contraseña, haga click en el enlace a continuación y siga las instrucciones</p>
-                    <a href='http://localhost:8080/newpassword/${token}'>Nueva contraseña</a>
+                    <a href='/newpassword/${token}'>Nueva contraseña</a>
                 `
         }
         await transporter.sendMail(resetPassMail)
@@ -56,7 +56,7 @@ export const newPassword = async (req, res) => {
     const {password} = req.body
     const email = await verifyToken(token);
     if(email === -1){
-        res.redirect(404, "http://localhost:8080/login")
+        res.redirect(404, "/login")
     }
     try {
         if(email){
@@ -68,7 +68,7 @@ export const newPassword = async (req, res) => {
             res.send('No es posible utilizar la misma contraseña que antes')
         } 
         if (passwordChange === 1) {
-            res.redirect("http://localhost:8080/login")
+            res.redirect("/login")
         }
      }
     
